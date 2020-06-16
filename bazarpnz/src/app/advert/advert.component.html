@@ -1,1 +1,233 @@
-<p>advert works!</p>
+
+<ngx-spinner bdColor = "rgba(0,0,0,0.7)" size = "medium" color = "#ffb200" type = "pacman" [fullScreen] = "true"><p style="color: white" > Загрузка данных... </p></ngx-spinner>
+
+<div class="no-print justify-content-center" style="margin-top: 70px; margin-right: 25px; margin-left: 25px;">
+    <div *ngFor="let i of objectKeys(this.anyAlerts)">
+       <alert [type]="this.anyAlerts[i].type">{{ this.anyAlerts[i].msg }}</alert>
+    </div>
+    </div>
+    
+    <div class="row justify-content-center align-self-center no-print"
+      style="margin-top: auto; margin-left: 20px; margin-right: 20px;">
+    
+      <form class="enterclass" (submit)="openRasp()">
+        <div class="form-group">
+          <label for="NameOfClass">Введите класс</label>
+          <input type="text" class="form-control" placeholder="Введите класс..." [typeahead]="this.classes"
+            [(ngModel)]="num" name="num" value=" ">
+        </div>
+        <button class="btn btn-success"  (click)="openError(errorpage)">Открыть</button>
+    
+      </form>
+      <button class="btn btn-danger" style="height: 38px; margin-top: 32px; margin-left: 10px;" 
+      *ngIf="this.pageClass != undefined;" (click)="openModal(changes)">Изменения в расписании</button>
+
+      <button class="btn btn-warning" style="height: 38px; margin-top: 32px; margin-left: 10px;" 
+        *ngIf="this.pageClass != undefined;" (click)="openModal(template)">Расписание звонков</button>
+    
+    
+    </div>
+    
+    <ng-template #template>
+      <div class="modal-header">
+        <h4 class="modal-title pull-left">Расписание звонков (1 корпус)</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="ModalRef.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        
+        
+        <div class="container-fluid">
+          <div class="row">
+    
+            <div class="container-fluid" style="background-color: #fff; font-size: small;">
+              <table class="table table-sm">
+                <thead>
+                  <td colspan="4" *ngIf="'Суббота' == this.daysall[this.day];else otherday">Понедельник - пятница</td>
+                  <ng-template #otherday>
+                    <td class="table-success" colspan="4">Понедельник - пятница</td>
+                  </ng-template>
+                  <tr>
+                    <th>№</th>
+                    <th>Время</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let i of objectKeys(time)">
+                    <th scope="row">{{i}}</th>
+                    <td>{{time[i]}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="container-fluid" style="background-color: #fff; font-size: small;">
+              <table class="table table-sm">
+                <thead>
+                  <td colspan="4" class="table-success" *ngIf="'Суббота' == this.daysall[this.day];else otherday2">Суббота
+                  </td>
+                  <ng-template #otherday2>
+                    <td colspan="4">Суббота</td>
+                  </ng-template>
+                  <tr>
+                    <th>№</th>
+                    <th>Время</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let i of objectKeys(time2)">
+                    <th scope="row">{{i}}</th>
+                    <td>{{time2[i]}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+    
+    
+      </div>
+    </ng-template>
+
+    <ng-template #changes>
+      <div class="modal-header container-fluid">
+        <h4 class="modal-title pull-left">Изменения в расписании (1 корпус)</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="ModalRef.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        
+        <div class="container-fluid">
+
+        Внимание! В расписании есть изменения, просим ознакомиться.
+        <button></button>
+
+
+      </div>
+    
+      </div>
+    </ng-template>
+    
+    <ng-template #errorpage>
+      <div class="modal-header">
+        <h4 class="modal-title pull-left">Ошибка!</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="ModalRef.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        
+      Допущена ошибка при вводе, либо ничего не введено.
+      Попробуйте еще раз.
+    
+      </div>
+    </ng-template>
+    
+    
+    
+    
+    
+    <div class="main" style="margin-top: 20px;">
+    
+      <h3 class="text-center" style="margin-bottom: 10px;" *ngIf="this.pageClass != undefined;else notwork"></h3>
+      <ng-template #notwork>
+        <h3 class="text-center">Расписание звонков (1 корпус)</h3>
+    
+        <div class="container-fluid" style="margin-top: 30px;">
+          <div class="row item_list">
+    
+            <div class="item">
+              <table class="table table-sm">
+                <thead>
+                  <td colspan="4" *ngIf="'Суббота' == this.daysall[this.day];else otherday">Понедельник - пятница</td>
+                  <ng-template #otherday>
+                    <td class="table-success" colspan="4">Понедельник - пятница</td>
+                  </ng-template>
+                  <tr>
+                    <th>№</th>
+                    <th>Время</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let i of objectKeys(time)">
+                    <th scope="row">{{i}}</th>
+                    <td>{{time[i]}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="item">
+              <table class="table table-sm">
+                <thead>
+                  <td colspan="4" class="table-success" *ngIf="'Суббота' == this.daysall[this.day];else otherday2">Суббота
+                  </td>
+                  <ng-template #otherday2>
+                    <td colspan="4">Суббота</td>
+                  </ng-template>
+                  <tr>
+                    <th>№</th>
+                    <th>Время</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let i of objectKeys(time2)">
+                    <th scope="row">{{i}}</th>
+                    <td>{{time2[i]}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+    
+      </ng-template>
+
+      <!-- Далее идет блок с расписанием -->
+    
+      <h3 class="text-center" style="margin-bottom: 10px; margin-top: 20px;" *ngIf="localst != null">Расписание {{this.localst}}" класса</h3>
+      <div class="container-fluid">
+        <div class="row item_list">
+    
+    
+          <div class="item" *ngFor="let days of objectKeys(this.classShedule)">
+    
+            <table class="table table-sm">
+    
+              <thead>
+                <td colspan="4" class="table-success" *ngIf="days == this.day+1;else otherday">{{daysall[days-1]}} -
+                  сегодня</td>
+                <ng-template #otherday>
+                  <td colspan="4"> {{daysall[days-1]}}</td>
+                </ng-template>
+    
+                <tr>
+                  <th>№</th>
+                  <th>Время</th>
+                  <th>Название</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let class of objectKeys(this.classShedule[days])">
+                  <th scope="row">{{class}}</th>
+                  <td *ngIf="this.objectKeys(this.classShedule)[days] != this.daysallz[days+1]; else sundayrasp">{{this.time[class]}}</td>
+
+                  <ng-template #sundayrasp>
+                    <td>{{this.time2[class]}}</td>
+                  </ng-template>
+
+                  <td>{{this.classShedule[days][class]}}</td>
+                  <!-- <td>-</td> -->
+                </tr>
+              </tbody>
+            </table>
+          </div>
+    
+    
+    
+        </div>
+      </div>
+    </div>
+    
+
+    

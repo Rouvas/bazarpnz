@@ -1,1 +1,85 @@
 /* You can add global styles to this file, and also import other style files */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.main{
+    height: auto;
+    width: 100%;
+    background-color: #fff;
+}
+
+.item_list2{
+    height: auto;
+    display: flex;
+    justify-content: center;
+    
+}
+
+.item_list{
+    height: auto;
+    display: flex;
+    justify-content: center;
+    margin-left: 10px;
+    margin-right: 10px;
+    
+}
+
+.item{
+    background-color: #fff;
+    width: 30%;
+    height: auto;
+    margin: 0 10px;
+    font-size: small;
+}
+
+@media (max-width: 1000px){
+    .item{
+        width: 100%;
+        height: auto;
+        margin: 20px 10px;
+    }
+}
+
+
+
+@media print
+{    
+    .no-print, .no-print *
+    {
+        display: none !important;
+    }
+}
+
+.enterclass{
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+}
+
+.enterclass .form-group{
+    margin: 0 20px !important;
+}
+
+.entersetclass{
+    display: flex;
+    align-items: flex-end;
+}
+
+.entersetclass .form-group{
+    margin: 0 20px !important;
+}
+
+.mini-footer {
+    background:#f8f9fa;
+    text-align:center;
+    padding:20px 0
+   }
+   .mini-footer p {
+    margin:0;
+    line-height:26px;
+    font-size:15px;
+   }
+
