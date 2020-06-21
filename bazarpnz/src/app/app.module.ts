@@ -14,22 +14,44 @@ import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 
+import {AngularFireModule} from '@angular/fire';
+
+import { TextMaskModule } from 'angular2-text-mask';
+
+import {AngularFireDatabaseModule} from '@angular/fire/database';
+import { environment } from 'src/environments/environment';
+import { AngularFireAuthModule } from '@angular/fire/auth';
+import { AngularFireAuthGuardModule } from '@angular/fire/auth-guard';
+import { AuthComponent } from './auth/auth.component';
+import { LkComponent } from './lk/lk.component';
+import { EditorComponent } from './editor/editor.component';
+import { AdminboardComponent } from './adminboard/adminboard.component';
+
 @NgModule({
   declarations: [
     AppComponent,
     AllAdvertsComponent,
-    AdvertComponent
+    AdvertComponent,
+    AuthComponent,
+    LkComponent,
+    EditorComponent,
+    AdminboardComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+    TextMaskModule,
     BrowserAnimationsModule,
     TypeaheadModule.forRoot(),
     ModalModule.forRoot(),
     AlertModule.forRoot(),
     BsDropdownModule.forRoot(),
     NgxSpinnerModule,
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireDatabaseModule,
+    AngularFireAuthGuardModule,
+    AngularFireAuthModule
   ],
   providers: [],
   bootstrap: [AppComponent]

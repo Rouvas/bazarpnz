@@ -1,0 +1,117 @@
+<div class="reg" *ngIf="condition">
+    <aside class="col-sm-4">
+<div class="card">
+    <article class="card-body">
+        <button class="float-right btn btn-primary" (click)="toggle()">Регистрация</button>
+    <h4 class="card-title mb-4 mt-1">Войти</h4>
+         <form (submit)="onLogin(email,password)">
+        <div class="form-group">
+            <label>Почта</label>
+            <input name="" class="form-control" placeholder="Email" type="email" [(ngModel)]="email"  [ngModelOptions]="{standalone: true}">
+        </div> 
+        <div class="form-group">
+            <a class="float-right" href="##" (click)="openModal(forgetpass)" onclick="return false;">Забыли пароль?</a>
+            <label>Пароль</label>
+            <input class="form-control" placeholder="******" type="password" [(ngModel)]="password"  [ngModelOptions]="{standalone: true}">
+        </div> 
+        <div class="form-group"> 
+        </div> 
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary btn-block"> Войти  </button>
+        </div>                                                         
+    </form>
+    <alert type="danger" *ngIf="isloggined==2">
+        <strong>О, нет!</strong> Кажется вы допустили ошибку при вводе данных.
+      </alert>
+
+      <alert type="success" *ngIf="isloggined==1">
+        <strong>Отлично!</strong> Загружаем ваш аккаунт и отправляем вас в личный кабинет.
+      </alert>  
+    </article>
+
+    </div>
+
+</aside>
+</div>
+
+
+<div class="reg" *ngIf="!condition">
+    <aside class="col-sm-6 ">
+<div class="card">
+    <article class="card-body">
+        <button class="float-right btn btn-primary"  (click)="toggle()">Есть аккаунт?</button>
+    <h4 class="card-title mb-4 mt-1">Регистрация</h4>
+         <form (submit)="onRegister(email,password,name,number)">
+            <div class="form-group">
+                <label>Ваше имя</label>
+                <input name="" class="form-control" placeholder="Имя" type="text" [(ngModel)]="name"  [ngModelOptions]="{standalone: true}">
+            </div>   
+            <div class="form-group">
+                <label>Номер телефона</label>
+                <input name="" [textMask]="{mask: mask}" class="form-control" placeholder="Номер телефона" type="text" [(ngModel)]="number"  [ngModelOptions]="{standalone: true}">
+            </div> 
+        <div class="form-group">
+            <label>Почта</label>
+            <input name="" class="form-control" placeholder="Email" type="email" [(ngModel)]="email"  [ngModelOptions]="{standalone: true}">
+        </div> 
+        <div class="form-group">
+            <label>Пароль</label>
+            <input class="form-control" placeholder="******" type="password" [(ngModel)]="password"  [ngModelOptions]="{standalone: true}">
+        </div> 
+        <div class="form-group"> 
+        </div>  
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary btn-block"> Зарегестрироваться </button>
+        </div>                                                            
+    </form>
+    <alert type="danger" *ngIf="isregistered==2">
+        <strong>О, нет!</strong> Кажется вы допустили ошибку при вводе данных, либо такая почта уже используется.
+      </alert>
+
+      <alert type="success" *ngIf="isregistered==1">
+        <strong>Отлично!</strong> Сохраняем ваш аккаунт и отправляем вас в личный кабинет.
+      </alert> 
+    </article>
+    </div>
+</aside>
+</div>
+
+<ng-template #forgetpass>
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">Восстановление пароля</h4>
+      <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+        <div class="container" *ngIf="condition">
+            
+        <div class="card">
+            <article class="card-body">
+                 <form (submit)="onRecovered(email)">
+                <div class="form-group">
+                    <label>Почта</label>
+                    <input name="" class="form-control" placeholder="Email" type="email" [(ngModel)]="email"  [ngModelOptions]="{standalone: true}">
+                </div> 
+ 
+                <div class="form-group"> 
+                </div> 
+                <div class="form-group">
+                    <button type="accept" class="btn btn-primary btn-block"> Отправить  </button>
+                </div>                                                         
+            </form>
+            <alert type="danger" *ngIf="isrecovered==2">
+                <strong>О, нет!</strong> Кажется вы допустили ошибку при вводе данных.
+              </alert>
+        
+              <alert type="success" *ngIf="isrecovered==1">
+                <strong>Отлично!</strong> Мы отправили вам на почту ссылку для восстановления пароля.
+              </alert>  
+            </article>
+        
+            </div>
+        
+        
+        </div>
+    </div>
+  </ng-template>

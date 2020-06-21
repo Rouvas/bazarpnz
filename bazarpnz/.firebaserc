@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "bazarpnz-rouvasweb": {
+      "hosting": {
+        "bazarpnz": [
+          "bazarpnz-rouvasweb"
+        ]
+      }
+    }
+  }
+}

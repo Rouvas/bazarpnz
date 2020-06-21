@@ -1,35 +1,71 @@
 <!-- Шапка -->
-<nav class="navbar navbar-expand-lg navbar-light fixed-top bg-light justify-content-center">
+<!-- <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-center">
   <a class="navbar-brand">
     <img src="../assets/logo.png"
       width="35" height="30" class="d-inline-block align-top" alt="">
-    Школа 68.
+    BazarPNZ.
   </a>
 
   <div class="btn-group" dropdown>
     <button id="button-basic" dropdownToggle type="button" class="btn btn-primary dropdown-toggle"
             aria-controls="dropdown-basic" style="margin-right: 15px;">
-            Расписание <span class="caret"></span>
+            Объявления <span class="caret"></span>
     </button>
     <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" 
         role="menu" aria-labelledby="button-basic" style="margin-right: 20px;">
-      <li role="menuitem"><a class="dropdown-item" href="https://fb.rasp.rouvas.ru">Отзывы</a></li>
+      <li role="menuitem"><a class="dropdown-item" href="/">Главная страница</a></li>
       <li class="divider dropdown-divider"></li>
-      <li role="menuitem"><a class="dropdown-item" href="https://vk.com/school68pnz">Вконтакте</a>
-       <li role="menuitem"><a class="dropdown-item" href="http://school68.edu-penza.ru/">Сайт школы</a>
+      <li role="menuitem"><a class="dropdown-item" href="/auth">Личный кабинет</a>
+      <li role="menuitem"><a class="dropdown-item" href="/auth">Панель управления</a>
       </li>
     </ul>
   </div>
 
-</nav>
+</nav> -->
+
+<div class="lime-header">
+  <nav class="navbar navbar-expand-lg">
+
+      <a class="navbar-brand" href="#">BazarPNZ</a>
+      <span dropdown>
+      <button class="navbar-toggler" type="button" id="basic-link" dropdownToggle data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <i class="material-icons">keyboard_arrow_down</i>
+      </button>
+      <ul class="dropdown-menu dropdown-menu-right" *dropdownMenu>
+        <li><a class="dropdown-item" href="#">Главная страница</a></li>
+        <li><a class="dropdown-item" href="./lk">Личный кабинет</a></li>
+        <li class="divider"></li>
+        <li><a class="dropdown-item" href="#">Выйти из аккаунта</a></li>
+
+    </ul>
+    </span>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <form class="form-inline my-2 my-lg-0 search">
+              <input class="form-control mr-sm-2" type="search" placeholder="Поиск по названиям объявлений..." aria-label="Search">
+          </form>
+          <ul class="navbar-nav ml-auto" >
+              <li class="nav-item dropdown" dropdown>
+                  <a class="nav-link dropdown-toggle" href="#" dropdownToggle role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <i class="material-icons">more_vert</i>
+                  </a>
+                  <ul class="dropdown-menu dropdown-menu-right" *dropdownMenu>
+                      <li><a class="dropdown-item" href="#">Главная страница</a></li>
+                      <li><a class="dropdown-item" href="./lk">Личный кабинет</a></li>
+                      <li class="divider"></li>
+                      <li><a class="dropdown-item" href="#">Выйти из аккаунта</a></li>
+
+                  </ul>
+              </li>
+          </ul>
+      </div>
+  </nav>
+</div>
 
 <!-- Блоки -->
 <router-outlet></router-outlet>
 
-
-
 <!-- Подвал -->
-<footer class="no-print">
+<!-- <footer class="no-print">
   <div class="mini-footer">
     <div class="container">
       <div class="row">
@@ -52,4 +88,4 @@
       </div>
     </div>
   </div>
-</footer>
+</footer> -->

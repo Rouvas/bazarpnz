@@ -5,6 +5,25 @@
     box-sizing: border-box;
 }
 
+
+html, 
+body {
+    font-size: 13px;
+    width: 100%;
+    height: 100%;
+}
+
+html {
+    overflow-x: hidden;
+}
+
+body {
+    background-color: #F4F7FC;
+    font-weight: normal;
+    color: #384C6D;
+    line-height: 1.6;
+}
+
 .main{
     height: auto;
     width: 100%;
@@ -53,6 +72,14 @@
     }
 }
 
+.reg{
+    margin-top: 20px; 
+    margin-bottom: 20px;
+    display: flex; 
+    justify-content: center; 
+    align-items: flex-end;
+}
+
 .enterclass{
     display: flex;
     justify-content: center;
@@ -68,9 +95,9 @@
     align-items: flex-end;
 }
 
-.entersetclass .form-group{
+/* .entersetclass .form-group{
     margin: 0 20px !important;
-}
+} */
 
 .mini-footer {
     background:#f8f9fa;
