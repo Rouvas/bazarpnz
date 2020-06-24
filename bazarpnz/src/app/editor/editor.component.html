@@ -1,1 +1,240 @@
-<p>editor works!</p>
+<div class="lime-container">
+    <div class="lime-body">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="card bg-info text-white">
+                        <div class="card-body">
+                            <div class="dashboard-info row">
+                                <div class="info-text col-md-6">
+                                    <h5 class="card-title">Добро пожаловать, {{name}}!</h5>
+                                    <p>Режиме редактора вы можете управлять объявлениями.</p>
+                                    <ul>
+                                        <li>Посмотрите список неопубликованных объявлений</li>
+                                        <li>Изучите</li>
+                                        <li>Разрешите или запретите публикацию</li>
+                                    </ul>
+                                </div>
+                                <div class="info-image col-md-6"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>      
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="">
+                                <div class="">
+                                    <h5 class="card-title">Ваш аккаунт</h5>
+                                    <li>Ваше имя: {{name}} </li>
+                                    <li>Ваш E-Mail: {{email}}</li>
+                                    <li>Ваш телефон: {{number}}</li>
+                                    <li>Ваш статус: {{rolename}}</li>
+                                    <a href="#" class="btn btn-warning m-t-xs" style="margin-right: 10px;" (click)="openModal(changedata)" onclick="return false;">Изменить данные</a>
+                                    <a href="#" class="btn btn-warning m-t-xs" (click)="openModal(forgetpass)" onclick="return false;" >Сменить пароль</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>                      
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Неопубликованные объявления</h5>
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">ID</th>
+                                            <th scope="col">Company</th>
+                                            <th scope="col">Amount</th>
+                                            <th scope="col">Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>0776</td>
+                                            <td>Sale Management</td>
+                                            <td>$18, 560</td>
+                                            <td><span class="badge badge-success">Finished</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>0759</td>
+                                            <td>Dropbox</td>
+                                            <td>$40, 672</td>
+                                            <td><span class="badge badge-warning">Waiting</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>0741</td>
+                                            <td>Social Media</td>
+                                            <td>$13, 378</td>
+                                            <td><span class="badge badge-info">In Progress</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>0740</td>
+                                            <td>Envato Market</td>
+                                            <td>$17, 456</td>
+                                            <td><span class="badge badge-info">In Progress</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>0735</td>
+                                            <td>Graphic Design</td>
+                                            <td>$29, 999</td>
+                                            <td><span class="badge badge-secondary">Canceled</span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>      
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<ng-template #forgetpass>
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">Восстановление пароля</h4>
+      <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+        <div class="container">
+            
+        <div class="card">
+            <article class="card-body">
+                 <form (submit)="onRecovered(email)">
+                <div class="form-group">
+                    <label>Введите вашу почту для начала операции</label>
+                    <input name="" class="form-control" placeholder="Email" type="email" [(ngModel)]="email"  [ngModelOptions]="{standalone: true}">
+                </div> 
+ 
+                <div class="form-group"> 
+                </div> 
+                <div class="form-group">
+                    <button type="accept" class="btn btn-primary btn-block"> Отправить  </button>
+                </div>                                                         
+            </form>
+            <alert type="danger" *ngIf="isrecovered==2">
+                <strong>О, нет!</strong> Кажется вы допустили ошибку при вводе данных.
+              </alert>
+        
+              <alert type="success" *ngIf="isrecovered==1">
+                <strong>Отлично!</strong> Мы отправили вам на почту ссылку для смены пароля.
+              </alert>  
+            </article>
+        
+            </div>
+        
+        
+        </div>
+    </div>
+  </ng-template>
+
+  <ng-template #changedata>
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">Изменение данных</h4>
+      <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+        <div class="container">
+            
+        <div class="card">
+            <article class="card-body">
+                 <form (submit)="onRecovered(email)">
+                <div class="form-group">
+                    <label>Имя</label>
+                    <input name="" class="form-control" placeholder="Имя" type="text" [(ngModel)]="name"  [ngModelOptions]="{standalone: true}">
+                </div> 
+                <div class="form-group">
+                    <label>Номер телефона</label>
+                    <input name="" class="form-control"[textMask]="{mask: mask}" placeholder="+7 (   ) - " type="text" [(ngModel)]="number"  [ngModelOptions]="{standalone: true}">
+                </div> 
+ 
+                <div class="form-group"> 
+                </div> 
+                <div class="form-group">
+                    <button type="accept" class="btn btn-primary btn-block"> Сохранить  </button>
+                </div>                                                         
+            </form>
+            <alert type="danger" *ngIf="isrecovered==2">
+                <strong>О, нет!</strong> Кажется вы допустили ошибку при вводе данных.
+              </alert>
+        
+              <alert type="success" *ngIf="isrecovered==1">
+                <strong>Отлично!</strong> Мы сохранили ваши данные.
+              </alert>  
+            </article>
+        
+            </div>
+        
+        
+        </div>
+    </div>
+  </ng-template>
+
+  <ng-template #newadvert>
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">Добавить объявление</h4>
+      <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+        <div class="container">
+            
+        <div class="card">
+            <article class="card-body">
+                 <form (submit)="onRecovered(email)">
+                <div class="form-group">
+                    <label>Ваше имя</label>
+                    <input name="" class="form-control" placeholder="Имя" type="text" [(ngModel)]="name"  [ngModelOptions]="{standalone: true}" disabled>
+                </div> 
+                <div class="form-group">
+                    <label>Ваш номер телефона</label>
+                    <input name="" class="form-control"[textMask]="{mask: mask}" placeholder="+7 (   ) - " type="text" [(ngModel)]="number"  [ngModelOptions]="{standalone: true}" disabled>
+                </div> 
+                <div class="form-group">
+                    <label>Название объявления</label>
+                    <input name="" class="form-control" placeholder="Введите название..." type="text" [(ngModel)]="newadvertname"  [ngModelOptions]="{standalone: true}" >
+                </div>  
+                <div class="form-group">
+                    <label>Цена</label>
+                    <input name="" class="form-control" placeholder="Введите цену.." type="text" [(ngModel)]="newadvertname"  [ngModelOptions]="{standalone: true}" >
+                </div>
+                <div class="form-group">
+                    <label>Категория</label>
+                    <input name="" class="form-control" placeholder="Выберите категорию, начиная вводить" type="text" [(ngModel)]="category"  [ngModelOptions]="{standalone: true}" >
+                </div> 
+                <div class="form-group">
+                    <label>Подробности</label>
+                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" [(ngModel)]="additional" [ngModelOptions]="{standalone: true}"></textarea>
+                </div>                
+
+                <div class="form-group">
+                    <button type="accept" class="btn btn-primary btn-block"> Отправить  </button>
+                </div>                                                         
+            </form>
+            <alert type="danger" *ngIf="isrecovered==2">
+                <strong>О, нет!</strong> Кажется вы допустили ошибку при вводе данных.
+              </alert>
+        
+              <alert type="success" *ngIf="isrecovered==1">
+                <strong>Отлично!</strong> Мы отправили ваше объявление на проверку.
+              </alert>  
+            </article>
+        
+            </div>
+        
+        
+        </div>
+    </div>
+  </ng-template>

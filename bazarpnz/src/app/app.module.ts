@@ -26,6 +26,7 @@ import { AuthComponent } from './auth/auth.component';
 import { LkComponent } from './lk/lk.component';
 import { EditorComponent } from './editor/editor.component';
 import { AdminboardComponent } from './adminboard/adminboard.component';
+import { SelectedAdvertComponent } from './selected-advert/selected-advert.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { AdminboardComponent } from './adminboard/adminboard.component';
     AuthComponent,
     LkComponent,
     EditorComponent,
-    AdminboardComponent
+    AdminboardComponent,
+    SelectedAdvertComponent
   ],
   imports: [
     BrowserModule,

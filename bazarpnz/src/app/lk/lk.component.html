@@ -7,14 +7,14 @@
                                 <div class="card-body">
                                     <div class="dashboard-info row">
                                         <div class="info-text col-md-6">
-                                            <h5 class="card-title">Добро пожаловать, %USER%!</h5>
+                                            <h5 class="card-title">Добро пожаловать, {{name}}!</h5>
                                             <p>В личном кабинете вы можете добавить новое объявление.</p>
                                             <ul>
                                                 <li>Придумайте интересное объявление</li>
                                                 <li>Оцените его стоимость адекватно</li>
                                                 <li>Напишите объявление</li>
                                             </ul>
-                                            <a href="#" class="btn btn-warning m-t-xs">Создать объявление</a>
+                                            <a href="#" class="btn btn-warning m-t-xs" (click)="openModal(newadvert)" onclick="return false;">Создать объявление</a>
                                         </div>
                                         <div class="info-image col-md-6"></div>
                                     </div>
@@ -27,13 +27,12 @@
                                     <div class="">
                                         <div class="">
                                             <h5 class="card-title">Ваш аккаунт</h5>
-                                            <li>Ваше имя: </li>
-                                            <li>Ваш E-Mail: </li>
-                                            <li>Ваш телефон:</li>
-                                            <li>Ваш статус:</li>
+                                            <li>Ваше имя: {{name}} </li>
+                                            <li>Ваш E-Mail: {{email}}</li>
+                                            <li>Ваш телефон: {{number}}</li>
+                                            <li>Ваш статус: {{rolename}}</li>
                                             <a href="#" class="btn btn-warning m-t-xs" style="margin-right: 10px;" (click)="openModal(changedata)" onclick="return false;">Изменить данные</a>
                                             <a href="#" class="btn btn-warning m-t-xs" (click)="openModal(forgetpass)" onclick="return false;" >Сменить пароль</a>
-                                            
                                         </div>
                                     </div>
                                 </div>
@@ -49,42 +48,20 @@
                                         <table class="table">
                                             <thead>
                                                 <tr>
-                                                    <th scope="col">ID</th>
-                                                    <th scope="col">Company</th>
-                                                    <th scope="col">Amount</th>
-                                                    <th scope="col">Status</th>
+                                                    <th scope="col">Категория</th>
+                                                    <th scope="col">Название</th>
+                                                    <th scope="col">Цена</th>
+                                                    <th scope="col">Дата публикации</th>
+                                                    <th scope="col">Действие</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td>0776</td>
-                                                    <td>Sale Management</td>
-                                                    <td>$18, 560</td>
-                                                    <td><span class="badge badge-success">Finished</span></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>0759</td>
-                                                    <td>Dropbox</td>
-                                                    <td>$40, 672</td>
-                                                    <td><span class="badge badge-warning">Waiting</span></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>0741</td>
-                                                    <td>Social Media</td>
-                                                    <td>$13, 378</td>
-                                                    <td><span class="badge badge-info">In Progress</span></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>0740</td>
-                                                    <td>Envato Market</td>
-                                                    <td>$17, 456</td>
-                                                    <td><span class="badge badge-info">In Progress</span></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>0735</td>
-                                                    <td>Graphic Design</td>
-                                                    <td>$29, 999</td>
-                                                    <td><span class="badge badge-secondary">Canceled</span></td>
+                                                <tr *ngFor="let i of objectKeys(this.myadverts)">
+                                                    <td>{{this.myadverts[i]['category']}}</td>
+                                                    <td>{{this.myadverts[i]['name']}}</td>
+                                                    <td>{{this.myadverts[i]['price']}}₽</td>
+                                                    <td>{{this.myadverts[i]['date']}}</td>
+                                                    <td><a href="./advert/{{i}}" class="badge badge-success">Открыть</a></td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -111,16 +88,14 @@
                     
                 <div class="card">
                     <article class="card-body">
-                         <form (submit)="onRecovered(email)">
+                         <form (ngSubmit)="onRecovered(forgetemail)">
                         <div class="form-group">
                             <label>Введите вашу почту для начала операции</label>
-                            <input name="" class="form-control" placeholder="Email" type="email" [(ngModel)]="email"  [ngModelOptions]="{standalone: true}">
+                            <input name="forgetemail" class="form-control" placeholder="Email" type="email" [(ngModel)]="forgetemail">
                         </div> 
          
-                        <div class="form-group"> 
-                        </div> 
                         <div class="form-group">
-                            <button type="accept" class="btn btn-primary btn-block"> Отправить  </button>
+                            <button type="submit" class="btn btn-primary btn-block"> Отправить  </button>
                         </div>                                                         
                     </form>
                     <alert type="danger" *ngIf="isrecovered==2">
@@ -151,18 +126,14 @@
                     
                 <div class="card">
                     <article class="card-body">
-                         <form (submit)="onRecovered(email)">
+                         <form (ngSubmit)="onChangeData(thisname,thisnumber)">
                         <div class="form-group">
                             <label>Имя</label>
-                            <input name="" class="form-control" placeholder="Имя" type="text" [(ngModel)]="name"  [ngModelOptions]="{standalone: true}">
+                            <input name="" class="form-control" placeholder="Имя" type="text" [(ngModel)]="thisname"  [ngModelOptions]="{standalone: true}">
                         </div> 
                         <div class="form-group">
                             <label>Номер телефона</label>
-                            <input name="" class="form-control"[textMask]="{mask: mask}" placeholder="+7 (   ) - " type="text" [(ngModel)]="number"  [ngModelOptions]="{standalone: true}">
-                        </div> 
-                        <div class="form-group">
-                            <label>E-Mail</label>
-                            <input name="" class="form-control" placeholder="Email" type="text" [(ngModel)]="email"  [ngModelOptions]="{standalone: true}">
+                            <input name="" class="form-control"[textMask]="{mask: mask}" placeholder="+7 (   ) - " type="text" [(ngModel)]="thisnumber"  [ngModelOptions]="{standalone: true}">
                         </div> 
          
                         <div class="form-group"> 
@@ -171,12 +142,74 @@
                             <button type="accept" class="btn btn-primary btn-block"> Сохранить  </button>
                         </div>                                                         
                     </form>
-                    <alert type="danger" *ngIf="isrecovered==2">
+                    <alert type="danger" *ngIf="ischanged==2">
                         <strong>О, нет!</strong> Кажется вы допустили ошибку при вводе данных.
                       </alert>
                 
-                      <alert type="success" *ngIf="isrecovered==1">
+                      <alert type="success" *ngIf="ischanged==1">
                         <strong>Отлично!</strong> Мы сохранили ваши данные.
+                      </alert>  
+                    </article>
+                
+                    </div>
+                
+                
+                </div>
+            </div>
+          </ng-template>
+        
+          <ng-template #newadvert>
+            <div class="modal-header">
+              <h4 class="modal-title pull-left">Добавить объявление</h4>
+              <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    
+                <div class="card">
+                    <article class="card-body">
+                         <form (ngSubmit)="onNewAdvert(category,newadvertname,place,price,additional)">
+                        <div class="form-group">
+                            <label>Ваше имя</label>
+                            <input name="" class="form-control" placeholder="Имя" type="text" [(ngModel)]="name"  [ngModelOptions]="{standalone: true}" disabled>
+                        </div> 
+                        <div class="form-group">
+                            <label>Ваш номер телефона</label>
+                            <input name="" class="form-control"[textMask]="{mask: mask}" placeholder="+7 (   ) - " type="text" [(ngModel)]="number"  [ngModelOptions]="{standalone: true}" disabled>
+                        </div> 
+                        <div class="form-group">
+                            <label>Название объявления</label>
+                            <input name="" class="form-control" placeholder="Введите название..." type="text" [(ngModel)]="newadvertname"  [ngModelOptions]="{standalone: true}" >
+                        </div>  
+                        <div class="form-group">
+                            <label>Цена (в рублях)</label>
+                            <input name="" class="form-control" placeholder="Введите цену.." type="number" [(ngModel)]="price"  [ngModelOptions]="{standalone: true}" >
+                        </div>
+                        <div class="form-group">
+                            <label>Категория</label>
+                            <input name="" class="form-control" [typeahead]="this.categories" placeholder="Выберите категорию, начиная вводить" type="text" [(ngModel)]="category"  [ngModelOptions]="{standalone: true}" >
+                        </div> 
+                        <div class="form-group">
+                            <label>Район</label>
+                            <input name="" class="form-control" placeholder="Введите район продажи..." type="text" [(ngModel)]="place"  [ngModelOptions]="{standalone: true}" >
+                        </div> 
+                        <div class="form-group">
+                            <label>Подробности</label>
+                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" [(ngModel)]="additional" [ngModelOptions]="{standalone: true}"></textarea>
+                        </div>                
+
+                        <div class="form-group">
+                            <button class="btn btn-primary btn-block"> Отправить  </button>
+                        </div>                                                         
+                    </form>
+                    <alert type="danger" *ngIf="isnewadvert==2">
+                        <strong>О, нет!</strong> Кажется вы допустили ошибку при вводе данных.
+                      </alert>
+                
+                      <alert type="success" *ngIf="isnewadvert==1">
+                        <strong>Отлично!</strong> Мы отправили ваше объявление на проверку.
                       </alert>  
                     </article>
                 

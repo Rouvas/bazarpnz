@@ -1,30 +1,107 @@
 
-<!-- <ngx-spinner bdColor = "rgba(0,0,0,0.7)" size = "medium" color = "#ffb200" type = "pacman" [fullScreen] = "true"><p style="color: white" > Загрузка данных... </p></ngx-spinner> -->
+<ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "medium" color = "#fff" type = "timer" [fullScreen] = "true"><p style="color: white" > Loading... </p></ngx-spinner>
+<div class="container">
+
+  <div class="row">
+    <div class="col-md-8">
+        <div class="card  text-black">
+            <div class="card-body">
+                <div class="dashboard-info row">
+                    <div class="info-text col-md-6">
+                        <h5 class="card-title">Последние новости!</h5>
+                    </div>
+                    <div *ngFor="let i of objectKeys(this.anyAlerts)">
+                      <alert [type]="this.anyAlerts[i].type">{{ this.anyAlerts[i].msg }}</alert>
+                   </div>       
+                </div>
+            </div>
+        </div>
+    </div>      
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body" *ngIf="auth.user | async as user; else showLogin">
+                        <h5 class="card-title">Добро пожаловать, {{name}}</h5>
+                        <li>Ваше имя: {{name}} </li>
+                        <li>Ваш E-Mail: {{email}}</li>
+                        <li>Ваш телефон: {{number}}</li>
+                        <li>Ваш статус: {{rolename}}</li>
+            </div>
+
+            <ng-template #showLogin>
+              <div class="card-body">
+                <h5 class="card-title">Добро пожаловать!</h5>
+                <li>Вы находитесь режиме гостя. </li>
+                <li>Ваш доступен просмотр объявлений.</li>
+                <li>Для создания объявлений, войдите.</li>
+                <li>Либо зарегестрируйтесь.</li>
+                <a class="btn btn-success m-t-xs" routerLink="/auth" onclick="return false;">Войти или зарегестрироваться</a>
+             </div>
+            </ng-template>
+
+        </div>
+    </div>                      
+</div>
 
 
-<div class=" container no-print justify-content-center">
-    <h5>Новости сайта</h5>
-    <div *ngFor="let i of objectKeys(this.anyAlerts)">
-       <alert [type]="this.anyAlerts[i].type">{{ this.anyAlerts[i].msg }}</alert>
-    </div>
-    </div>
-    
-    <!-- <div class="no-print justify-content-center">
-        <h5>Поиск объявления по названию</h5>
+    <div class="row">
+      <div class="col-md-12">
+          <div class="card">
+              <div class="card-body">
+                  <h5 class="card-title">Категории объявлений</h5>
+                  <div class="table-responsive">
+                      <table class="table">
+                          <thead>
+                              <tr>
+                                  <th scope="col">Название</th>
+                                  <th scope="col">Действие</th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                              <tr *ngFor="let i of objectKeys(this.cdatabase)">
+                                  <td>{{i}}</td>
+                                  <td><a class="badge badge-info" href="/category/{{i}}">Открыть</a></td>
+                              </tr>
+                          </tbody>
+                      </table>
+                  </div>      
+              </div>
+          </div>
+      </div>
+  </div>
+      <!-- Далее идет блок с расписанием -->
+      <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Все объявления на сайте</h5>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Категория</th>
+                                    <th scope="col">Название</th>
+                                    <th scope="col">Цена</th>
+                                    <th scope="col">Дата публикации</th>
+                                    <th scope="col">Действие</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let i of objectKeys(this.alladverts)">
+                                    <td>{{this.alladverts[i]['category']}}</td>
+                                    <td>{{this.alladverts[i]['name']}}</td>
+                                    <td>{{this.alladverts[i]['price']}}₽</td>
+                                    <td>{{this.alladverts[i]['date']}}</td>
+                                    <td><a href="./advert/{{i}}" class="badge badge-success">Открыть</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>      
+                </div>
+            </div>
         </div>
-    <div class="row justify-content-center align-self-center no-print"
-    >
-      <form class="enterclass" (submit)="openRasp()">
-        <div class="form-group">
-          <input type="text" class="form-control" placeholder="Введите текст..." [typeahead]="this.classes"
-            [(ngModel)]="num" name="num" value=" ">
-        </div>
-        <button class="btn btn-success"  (click)="openError(errorpage)">Открыть</button>
-    
-      </form>
-    </div> -->
-    
-    
+    </div>
+          
+  </div> 
     <ng-template #errorpage>
       <div class="modal-header">
         <h4 class="modal-title pull-left">Ошибка!</h4>
@@ -40,70 +117,18 @@
       </div>
     </ng-template>
     
-    
-    
-    
-    <h5 class="container" style="margin-right: 35px; margin-left: 25px; margin-top:50px">Категории объявлений</h5>
-    <div class="main"> 
-       
-    
-        <div class="container-fluid" style="margin-top: 10px;">
-          <div class="row item_list">
-    
-            <div class="item">
-              <table class="table table-sm">
-                <thead>
-                  <tr>
-                    <th>Категория</th>
-                    <th>Действие</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <th scope="row">Электроприбор</th>
-                    <td><a href="http://vk.com/">Открыть</a></td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            
-          </div>
 
-      <!-- Далее идет блок с расписанием -->
-      <h5 style="margin-top: 70px; margin-right: 25px; margin-left: 25px;" >Объявления категории {{this.localst}}"</h5>
-      <div class="container-fluid">
-        <div class="row item_list">
-    
-    
-          <div class="item" *ngFor="let days of objectKeys(this.classShedule)">
-    
-            <table class="table table-sm">
-              <thead>
-                <td colspan="4" class="table-success">Электрообогреватель XIAOMI</td>
-                <tr>
-                  <th>Категория</th>
-                  <th>Стоимость</th>
-                  <th>Дата публикации</th>
-                  <th>Действие</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <th>Электроприбор</th>
-                  <td>3000 ₽</td>
-                  <td>25/05/2020</td>
-                  <td> <a href="http://vk.com/">Открыть</a></td>
-                </tr>
-              </tbody>
-            </table>
-
-
-
-
-          </div>
+        <!-- <div class="no-print justify-content-center">
+        <h5>Поиск объявления по названию</h5>
         </div>
-      </div>
-    </div>
+    <div class="row justify-content-center align-self-center no-print"
+    >
+      <form class="enterclass" (submit)="openRasp()">
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="Введите текст..." [typeahead]="this.classes"
+            [(ngModel)]="num" name="num" value=" ">
+        </div>
+        <button class="btn btn-success"  (click)="openError(errorpage)">Открыть</button>
     
-
-    
+      </form>
+    </div> -->

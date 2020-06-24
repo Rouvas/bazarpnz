@@ -53,15 +53,14 @@ export class AuthComponent implements OnInit {
 
   onRegister(email:string,password:string,name:string,number:string){
   
-    console.log(email,password,name,number)
+   
      let promise = new Promise((resolve, reject) => {
     
       this.auth.auth.createUserWithEmailAndPassword(email, password).then(
         result => {
           this.isregistered =1 ; 
-          console.log(result.user.uid);
           let updates = {};
-          updates[result.user.uid] = { name : name, number : number, role : 0 };
+          updates[result.user.uid] = {email: email, name : name, number : number, role : 0 };
           this.db.object('accounts').update(updates);
         },
         error => this.isregistered = 2 
@@ -72,7 +71,7 @@ export class AuthComponent implements OnInit {
   }
 
   onRecovered(email){
-    console.log(email);
+   
     this.auth.auth.sendPasswordResetEmail(email).then(
       result => {
         this.isrecovered=1;

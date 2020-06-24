@@ -18,16 +18,16 @@ html {
 }
 
 body {
-    background-color: #F4F7FC;
+    /* background-color: #F4F7FC; */
     font-weight: normal;
-    color: #384C6D;
+    /* color: #384C6D; */
     line-height: 1.6;
 }
 
 .main{
     height: auto;
     width: 100%;
-    background-color: #fff;
+    /* background-color: #fff; */
 }
 
 .item_list2{
@@ -47,7 +47,7 @@ body {
 }
 
 .item{
-    background-color: #fff;
+    /* background-color: #fff; */
     width: 30%;
     height: auto;
     margin: 0 10px;
@@ -100,7 +100,7 @@ body {
 } */
 
 .mini-footer {
-    background:#f8f9fa;
+    /* background:#f8f9fa; */
     text-align:center;
     padding:20px 0
    }
@@ -110,3 +110,6 @@ body {
     font-size:15px;
    }
 
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

@@ -2,6 +2,9 @@ import { Component, OnInit, TemplateRef} from '@angular/core';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { AngularFireAuth } from '@angular/fire/auth';
+import {MatPaginator} from '@angular/material/paginator';
+import {MatTableDataSource} from '@angular/material/table';
 
 @Component({
   selector: 'app-advert',
@@ -10,14 +13,23 @@ import { NgxSpinnerService } from 'ngx-spinner';
 })
 export class AdvertComponent implements OnInit {
 
+
+  email: string;
+  name : string;
+  number : string;
+  role : number;
+  rolename : string;
+
   ModalRef: BsModalRef;
 
   anyAlerts: any = [];
  
 
   database;
+  cdatabase = new Object();
+  alladverts = new Object();
   
-
+  userId:any;
   localst;
   pageClass: string;
   classShedule: Object = {};
@@ -29,42 +41,31 @@ export class AdvertComponent implements OnInit {
   daysallz = ["1","2","3","4","5","6"]; //Простите меня за это
   colour = "table-success"; //Для подстветки цвета
 
-  time = {
-    0: '8.00 - 8.40',
-    1: '8.50 ― 9.30',
-    2: '9.40 ― 10.20',
-    3: '10.35 ― 11.15',
-    4: '11.30 ― 12.10',
-    5: '12.25 ― 13.05',
-    6: '13.10 ― 13.50'
-  };
-
-  time2 = {
-    0: '8.00 - 8.40',
-    1: '8.50 - 9.30',
-    2: '9.35 - 10.15',
-    3: '10.20 - 11.00',
-    4: '11.05 - 11.45',
-    5: '11.50 - 12.30',
-    6: '12.35 - 13.15'
-  }
 
 
 
   constructor(private modalService: BsModalService, public db: AngularFireDatabase, 
-    private SpinnerService: NgxSpinnerService
+    private SpinnerService: NgxSpinnerService, public auth: AngularFireAuth
     ) { 
+      this.SpinnerService.show();
+      this.auth.authState.subscribe(user => {
+        if(user) this.userId = user.uid
+        if (user) this.email = user.email
+        this.getAccount(this.userId);
+      }) 
+      
   }
 
   num: string = "";
 
   ngOnInit(): void {
-    this.SpinnerService.show();
-    this.getSchedule();
+    
+    // this.getSchedule();
     this.getAlerts();
-
+    this.getCategory();
+    this.getAdverts();
     this.day = new Date().getDay() -1;
-
+    
     if (localStorage.getItem('class') == null) {this.SpinnerService.hide();}
 
   }
@@ -73,20 +74,22 @@ export class AdvertComponent implements OnInit {
     this.db.object('alerts').valueChanges().subscribe(val => {
 
       this.anyAlerts = val;
+      this.SpinnerService.hide();
     });
     
   }
 
-  getSchedule(){
-    this.db.object('schedule').valueChanges().subscribe(val => {
+  getAdverts(){
+    this.db.object('adverts').valueChanges().subscribe(val => {
     
-     this.database = val; // Полная бд
-     this.classes = this.objectKeys(val).sort();  // Список классов
-     if (localStorage.getItem('class') != null) {
-      this.num = localStorage.getItem('class');
-      this.openRasp();
-     this.SpinnerService.hide();
-    }
+     this.alladverts = val; // Полная бд
+
+    //  this.classes = this.objectKeys(val).sort();  // Список классов
+    //  if (localStorage.getItem('class') != null) {
+    //   this.num = localStorage.getItem('class');
+    //   this.openRasp();
+    //  this.SpinnerService.hide();
+    // }
     
    });
    
@@ -105,26 +108,48 @@ export class AdvertComponent implements OnInit {
   openTime() {
     this.pageClass = undefined;
   }
-  openRasp() {
+  // openRasp() {
 
     
 
-    localStorage.setItem('class', this.num);
+  //   localStorage.setItem('class', this.num);
 
-    if (Object.keys(this.database).includes(this.num.toLowerCase())) {  
-      this.pageClass = this.num.toUpperCase().replace(/(\d+)/g, '$1 "');;
-      this.classShedule = this.database[this.num.toLowerCase()]; 
+  //   if (Object.keys(this.database).includes(this.num.toLowerCase())) {  
+  //     this.pageClass = this.num.toUpperCase().replace(/(\d+)/g, '$1 "');;
+  //     this.classShedule = this.database[this.num.toLowerCase()]; 
       
-      this.localst = this.pageClass.toLowerCase();
+  //     this.localst = this.pageClass.toLowerCase();
       
 
-    } else {
-      //Выводим модалку с ошибкой
-      this.causeError = 1;
-      localStorage.setItem('class', '');
-      this.num = '';
-    }
+  //   } else {
+  //     //Выводим модалку с ошибкой
+  //     this.causeError = 1;
+  //     localStorage.setItem('class', '');
+  //     this.num = '';
+  //   }
 
+  // }
+
+  getAccount(userid){
+    this.db.object('accounts/' + userid).valueChanges().subscribe(val => {
+    
+     this.database = val; // Полная бд
+      this.role = this.database['role'];
+      if (this.role == 0) {this.rolename = 'Пользователь'} else if (this.role==1){this.rolename='Редактор'} else {this.rolename = 'Администратор'}
+      this.number = this.database['number'];
+      this.name = this.database['name'];
+   });
+   
+  }
+
+  getCategory(){
+    this.db.object('category').valueChanges().subscribe(val => {
+    
+     this.cdatabase = val; // Полная бд
+     console.log(this.cdatabase);
+
+   });
+   
   }
 
 

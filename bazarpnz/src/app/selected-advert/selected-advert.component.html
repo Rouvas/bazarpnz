@@ -1,0 +1,88 @@
+<div class="container">
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title"> Информация об объявлении</h5>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Категория</th>
+                                <th scope="col">Название</th>
+                                <th scope="col">Цена</th>       
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>{{this.category}}</td>
+                                <td>{{this.name}}</td>
+                                <td>{{this.price}} ₽</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>      
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title"> Информация о продавце</h5>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Имя</th>
+                                <th scope="col">Телефон</th>
+                                <th scope="col">E-Mail</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>{{this.ownername}}</td>
+                                <td>{{this.ownernumber}}</td>
+                                <td>{{this.ownermail}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>      
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <!-- <h5 class="card-title"></h5> -->
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Район продажи</th>
+                                <th scope="col">ID объявления в базе</th>
+                                <th scope="col">Дата публикации</th>       
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>{{this.place}}</td>
+                                <td>{{this.advertid}}</td>
+                                <td>{{this.date}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>  
+                <li>Описание объявления: {{this.text}}</li>  
+                 
+            </div>
+        </div>
+    </div>
+</div>
+</div>
