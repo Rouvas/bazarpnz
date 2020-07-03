@@ -8,10 +8,10 @@
                             <div class="dashboard-info row">
                                 <div class="info-text col-md-6">
                                     <h5 class="card-title">Добро пожаловать, {{name}}!</h5>
-                                    <p>Режиме редактора вы можете управлять объявлениями.</p>
+                                    <p>В режиме редактора вы можете управлять объявлениями.</p>
                                     <ul>
                                         <li>Посмотрите список неопубликованных объявлений</li>
-                                        <li>Изучите</li>
+                                        <li>Откройте и изучите</li>
                                         <li>Разрешите или запретите публикацию</li>
                                     </ul>
                                 </div>
@@ -30,8 +30,9 @@
                                     <li>Ваш E-Mail: {{email}}</li>
                                     <li>Ваш телефон: {{number}}</li>
                                     <li>Ваш статус: {{rolename}}</li>
-                                    <a href="#" class="btn btn-warning m-t-xs" style="margin-right: 10px;" (click)="openModal(changedata)" onclick="return false;">Изменить данные</a>
-                                    <a href="#" class="btn btn-warning m-t-xs" (click)="openModal(forgetpass)" onclick="return false;" >Сменить пароль</a>
+                                    <a href="#" class="btn btn-warning m-t-xs btn-block" style="margin-right: 10px;" (click)="openModal(changedata)" onclick="return false;">Изменить данные</a>
+                                    <a href="#" class="btn btn-warning m-t-xs btn-block" (click)="openModal(forgetpass)" onclick="return false;" >Сменить пароль</a>
+                                    <a href="#" routerLink="/lk" class="btn btn-success m-t-xs btn-block" >Войти в личный кабинет</a>
                                 </div>
                             </div>
                         </div>
@@ -47,46 +48,51 @@
                                 <table class="table">
                                     <thead>
                                         <tr>
-                                            <th scope="col">ID</th>
-                                            <th scope="col">Company</th>
-                                            <th scope="col">Amount</th>
-                                            <th scope="col">Status</th>
+                                            <th scope="col">Категория</th>
+                                            <th scope="col">Название</th>
+                                            <th scope="col">Цена</th>
+                                            <th scope="col">Дата публикации</th>
+                                            <th scope="col">Действие</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>0776</td>
-                                            <td>Sale Management</td>
-                                            <td>$18, 560</td>
-                                            <td><span class="badge badge-success">Finished</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td>0759</td>
-                                            <td>Dropbox</td>
-                                            <td>$40, 672</td>
-                                            <td><span class="badge badge-warning">Waiting</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td>0741</td>
-                                            <td>Social Media</td>
-                                            <td>$13, 378</td>
-                                            <td><span class="badge badge-info">In Progress</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td>0740</td>
-                                            <td>Envato Market</td>
-                                            <td>$17, 456</td>
-                                            <td><span class="badge badge-info">In Progress</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td>0735</td>
-                                            <td>Graphic Design</td>
-                                            <td>$29, 999</td>
-                                            <td><span class="badge badge-secondary">Canceled</span></td>
+                                        <tr *ngFor="let i of objectKeys(this.newadverts)">
+                                            <td>{{this.newadverts[i]['category']}}</td>
+                                            <td>{{this.newadverts[i]['name']}}</td>
+                                            <td>{{this.newadverts[i]['price']}}₽</td>
+                                            <td>{{this.newadverts[i]['date']}}</td>
+                                            <td><a href="./advert/{{i}}" class="badge badge-success">Открыть</a></td>
                                         </tr>
                                     </tbody>
                                 </table>
                             </div>      
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Полученные жалобы</h5>
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Название объявления</th>
+                                            <th scope="col">Действие</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let i of objectKeys(this.abuses)">
+                                            <td>{{this.abuses[i]['name']}}</td>
+                                            <!-- <td><a href="/advert/{{this.abuses[i]['advertid']}}" class="badge badge-success">Открыть</a></td> -->
+                                                <td><a (click)="openAbuseModal(abuse,this.abuses[i],i)" class="badge badge-success">Открыть</a></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div> 
+                             
                         </div>
                     </div>
                 </div>
@@ -236,5 +242,38 @@
         
         
         </div>
+    </div>
+  </ng-template>
+
+  <ng-template #abuse>
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">Проверка полученной жалобы</h4>
+      <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+        <p>Проверяя жалобу, учитывайте правила сообщества</p>
+        <p>Принятие жалобы означает, что статус объявления сменяется на "Закрыто"</p>
+        <p>Отклонение жалобы, удаляет жалобу</p>
+
+        <div class="form-group">
+            <label>Кто отправил жалобу</label>
+            <input name="" class="form-control" placeholder="Имя" type="text" [(ngModel)]="whocreateabuse"  [ngModelOptions]="{standalone: true}" disabled>
+        </div> 
+
+        <div class="form-group">
+            <label>Подробности</label>
+            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" [(ngModel)]="abusetext" [ngModelOptions]="{standalone: true}" disabled>Жалоба</textarea>
+        </div> 
+        <a href="/advert/{{abuseid}}" class="btn btn-success btn-block">Открыть объявление</a>
+        <hr>
+        <button href="##"  (click)="Abuse(0,this.abuseid,this.whatabuse)" class="btn btn-danger btn-block"> Принять </button> 
+        <button href="##"  (click)="Abuse(1)" class="btn btn-warning btn-block"> Отклонить </button> 
+
+        <br *ngIf="isnewabuse==1">
+        <alert type="success" *ngIf="isnewabuse==1">
+            <strong>Отлично!</strong> Ваше решение сохранено. 
+          </alert> 
     </div>
   </ng-template>

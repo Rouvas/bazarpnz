@@ -5,6 +5,9 @@ import { TemplateRef } from '@angular/core';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import createNumberMask from 'text-mask-addons/dist/createNumberMask'
 
+import { NgxSpinnerService } from 'ngx-spinner';
+import { Router } from '@angular/router';
+
 const numberMask = createNumberMask({
   prefix: '',
   suffix: ' $' // This will put the dollar sign at the end, with a space.
@@ -24,7 +27,7 @@ export class LkComponent implements OnInit {
   name : string;
   number : string;
   role : number;
-  rolename : string;
+  rolename : string = 'Loading';
   place : string;
   mask = ['+','7',' ','(',/[1-9]/, /\d/, /\d/,')' ,' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, '-',/\d/, /\d/];
   maskPrice = [' ',/\d/,'₽'];
@@ -44,9 +47,11 @@ export class LkComponent implements OnInit {
 
   cdatabase:any;
   database:any;
+  pdatabase:any;
   myadverts= {};
 
   categories:any;
+  places:any;
 
   userId:any;
   
@@ -58,7 +63,8 @@ export class LkComponent implements OnInit {
 
   modalRef: BsModalRef;
 
-  constructor(public auth: AngularFireAuth, public db: AngularFireDatabase, private modalService: BsModalService) { 
+  constructor(public auth: AngularFireAuth,private router: Router, public db: AngularFireDatabase, private modalService: BsModalService, private SpinnerService: NgxSpinnerService) { 
+    this.SpinnerService.show();
     this.auth.authState.subscribe(user => {
       if(user) this.userId = user.uid
       if (user) this.email = user.email
@@ -70,6 +76,7 @@ export class LkComponent implements OnInit {
 
   ngOnInit() {
  this.getCategory();
+ this.getPlaces();
 
    
   }
@@ -121,6 +128,16 @@ export class LkComponent implements OnInit {
    
   }
 
+  getPlaces(){
+    this.db.object('place').valueChanges().subscribe(val => {
+    
+     this.pdatabase = val; // Полная бд
+    this.places = this.objectKeys(this.pdatabase);
+
+   });
+   
+  }
+
   getAdverts(userid){
     this.db.object('adverts').valueChanges().subscribe(val => {
     
@@ -139,17 +156,24 @@ export class LkComponent implements OnInit {
    
   }
 
+  blocked = 0;
+
   getAccount(userid){
     this.db.object('accounts/' + userid).valueChanges().subscribe(val => {
     
      this.database = val; // Полная бд
       console.log(this.database);
+
+      this.blocked = this.database['blocked'];
+      if (this.blocked == 1) {this.router.navigate(['/error']);}
+
       this.role = this.database['role'];
       if (this.role == 0) {this.rolename = 'Пользователь'} else if (this.role==1){this.rolename='Редактор'} else {this.rolename = 'Администратор'}
       this.number = this.database['number'];
       this.thisnumber = this.number;
       this.name = this.database['name'];
       this.thisname = this.name;
+      this.SpinnerService.hide();
    });
    
   }

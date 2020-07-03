@@ -1,1 +1,538 @@
-<p>adminboard works!</p>
+<div class="lime-container">
+    <div class="lime-body">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="card bg-info text-white">
+                        <div class="card-body">
+                            <div class="dashboard-info row">
+                                <div class="info-text col-md-6">
+                                    <h5 class="card-title">Доброго времени суток, {{name}}!</h5>
+                                    <p>В личном кабинете вы можете:</p>
+                                    <ul>
+                                        <li>Управлять всеми объявлениями</li>
+                                        <li>Управлять аккаунтами пользователей</li>
+                                        <li>Управлять категорями объявлений</li>
+                                    </ul>
+                                </div>
+                                <div class="info-image col-md-6"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>      
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="">
+                                <div class="">
+                                    <h5 class="card-title">Ваш аккаунт</h5>
+                                    <li>Ваше имя: {{name}} </li>
+                                    <li>Ваш E-Mail: {{email}}</li>
+                                    <li>Ваш телефон: {{number}}</li>
+                                    <li>Ваш статус: {{rolename}}</li>
+                                    <a href="#" class="btn btn-warning m-t-xs btn-block" style="margin-right: 10px;" (click)="openModal(changedata)" onclick="return false;">Изменить данные</a>
+                                    <a href="#" class="btn btn-warning m-t-xs btn-block" (click)="openModal(forgetpass)" onclick="return false;" >Сменить пароль</a>
+                                    <a href="#" routerLink="/lk" class="btn btn-success m-t-xs btn-block" >Войти в личный кабинет</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>                      
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card stat-card">
+                        <div class="card-body">
+                            <h5 class="card-title">Всего аккаунтов</h5>
+                            <h2 class="float-right">{{this.allaccounts}}</h2>
+                            <p>Пользователи</p>
+                            <div class="progress" style="height: 10px;">
+                                <div class="progress-bar bg-warning" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card stat-card">
+                        <div class="card-body">
+                            <h5 class="card-title">Всего активных объявлений</h5>
+                            <h2 class="float-right">{{this.objectKeys(this.countadverts).length}}</h2>
+                            <p>Учитываются проверенные</p>
+                            <div class="progress" style="height: 10px;">
+                                <progressbar  [max]="this.objectKeys(this.alladverts).length" [value]="this.objectKeys(this.countadverts).length">
+                                  </progressbar>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+           
+            <div class="row">
+              <div class="col-md-6">
+                  <div class="card">
+                      <div class="card-body">
+                          <h5 class="card-title">Все объявления</h5>
+                          <input class="form-control" type="text" [(ngModel)]="searchAdv" placeholder="Поиск...">
+                          <div class="table-responsive table-wrapper-scroll-y my-custom-scrollbar">
+                              <table class="table">
+                                  <thead>
+                                      <tr>
+                                          <th scope="col">Категория <a (click)='Click(1,1)'>&#8597;</a></th>
+                                          <th scope="col">Название <a (click)='Click(1,2)'>&#8597;</a></th>
+                                          <th scope="col">Действие</th>
+                                      </tr>
+                                  </thead>
+                                  <tbody>
+                                      <tr *ngFor="let i of adverts |filter:searchAdv ">
+                                          <td>{{i['category']}}</td>
+                                          <td>{{i['name']}}</td>
+                                          <td><a href="./advert/{{i['id']}}" class="badge badge-success">Открыть</a></td>
+                                      </tr>
+                                  </tbody>
+                              </table>
+                          </div>      
+                      </div>
+                  </div>
+              </div>
+              <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Все аккаунты</h5>
+                        <input class="form-control" type="text" [(ngModel)]="searchAcc" placeholder="Поиск...">
+                        <div class="table-responsive table-wrapper-scroll-y my-custom-scrollbar">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">ID <a (click)='Click(2,1)'>&#8597;</a></th>
+                                        <th scope="col">Имя<a (click)='Click(2,2)'>&#8597;</a></th>
+                                        <th scope="col">Действие</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let i of accs |filter:searchAcc">
+                                        <td>{{i['id']}}</td>
+                                        <td>{{i['name']}}</td>
+                                        <td><a (click)='openModal(openaccount, i["id"])' class="badge badge-success">Открыть</a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- <p *ngIf="countadv == 0">Нет объявлений в данной категории</p>       -->
+                    </div>
+                </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Все категории</h5>
+                        <input class="form-control" type="text" [(ngModel)]="searchCat" placeholder="Поиск...">
+                        <div class="table-responsive table-wrapper-scroll-y my-custom-scrollbar">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Название <a (click)='Click(3,1)'>&#8597;</a></th>
+                                        <th scope="col">Действие</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let i of categories |filter:searchCat">
+                                        <td>{{i['name']}}</td>
+                                        <td><a class="badge badge-success">Открыть</a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div> 
+                        <hr>
+                        <button (click)="openModal(addcategory)" class="btn btn-primary btn-block"> Добавить категорию  </button>     
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card">
+                  <div class="card-body">
+                      <h5 class="card-title">Все районы</h5>
+                      <input class="form-control" type="text" [(ngModel)]="searchPla" placeholder="Поиск...">
+                      <div class="table-responsive table-wrapper-scroll-y my-custom-scrollbar">
+                          <table class="table">
+                              <thead>
+                                  <tr>
+                                      <th scope="col">Название<a (click)='Click(4,1)'>&#8597;</a></th>
+                                      <th scope="col">Действие</th>
+                                  </tr>
+                              </thead>
+                              <tbody>
+                                  <tr *ngFor="let i of allplaces |filter:searchPla">
+                                      <td>{{i['name']}}</td>
+                                      <td><a (click)='openModal()' class="badge badge-success">Открыть</a></td>
+                                  </tr>
+                              </tbody>
+                          </table>
+                      </div>
+                      <hr>
+                      <button (click)="openModal(addplace)" class="btn btn-primary btn-block"> Добавить район  </button>
+                      <!-- <p *ngIf="countadv == 0">Нет объявлений в данной категории</p>       -->
+                  </div>
+              </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+              <div class="card">
+                  <div class="card-body">
+                      <h5 class="card-title">Все новости</h5>
+                      <input class="form-control" type="text" [(ngModel)]="searchNews" placeholder="Поиск...">
+                      <div class="table-responsive table-wrapper-scroll-y my-custom-scrollbar">
+                          <table class="table">
+                              <thead>
+                                  <tr>
+                                      <th scope="col">Текст</th>
+                                      <th scope="col">Действие</th>
+                                  </tr>
+                              </thead>
+                              <tbody>
+                                  <tr *ngFor="let i of Alerts |filter:searchNews">
+                                      <td>{{i['msg']}}</td>
+                                      <td><a class="badge badge-success">Открыть</a></td>
+                                  </tr>
+                              </tbody>
+                          </table>
+                      </div> 
+                      <hr>
+                      <button (click)="openModal(addnews)"  class="btn btn-primary btn-block"> Добавить новость  </button>     
+                  </div>
+              </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Все жалобы</h5>
+                    <input class="form-control" type="text" [(ngModel)]="searchAbu" placeholder="Поиск...">
+                    <div class="table-responsive table-wrapper-scroll-y my-custom-scrollbar">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">На какое объявление<a (click)='Click(6,1)'>&#8597;</a></th>
+                                    <th scope="col">Статус<a (click)='Click(6,2)'>&#8597;</a></th>
+                                    <th scope="col">Действие</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let i of abuses |filter:searchAbu">
+                                    <td>{{i['name']}}</td>
+                                    <td>{{i['status']}}</td>
+                                    <td><a (click)='openModal()' class="badge badge-success">Открыть</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- <p *ngIf="countadv == 0">Нет объявлений в данной категории</p>       -->
+                </div>
+            </div>
+        </div>
+      </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Общая сводка по сервису</h5>
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Всего объявлений</th>
+                                            <th scope="col">Всего категорий</th>
+                                            <th scope="col">Всего районов</th>
+                                            <!-- <th scope="col">Общее количество посетителей</th> -->
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>{{this.objectKeys(this.alladverts).length}}</td>
+                                            <td>{{this.objectKeys(this.allcategory).length}}</td>
+                                            <td>{{this.objectKeys(this.allplacesval).length}}</td>
+                                            <!-- <td>Просмотрели объявления: </td> -->
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>      
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<ng-template #forgetpass>
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">Восстановление пароля</h4>
+      <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+        <div class="container">
+            
+        <div class="card">
+            <article class="card-body">
+                 <form (ngSubmit)="onRecovered(forgetemail)">
+                <div class="form-group">
+                    <label>Введите вашу почту для начала операции</label>
+                    <input name="forgetemail" class="form-control" placeholder="Email" type="email" [(ngModel)]="forgetemail">
+                </div> 
+ 
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary btn-block"> Отправить  </button>
+                </div>                                                         
+            </form>
+            <alert type="danger" *ngIf="isrecovered==2">
+                <strong>О, нет!</strong> Кажется вы допустили ошибку при вводе данных.
+              </alert>
+        
+              <alert type="success" *ngIf="isrecovered==1">
+                <strong>Отлично!</strong> Мы отправили вам на почту ссылку для смены пароля.
+              </alert>  
+            </article>
+        
+            </div>
+        
+        
+        </div>
+    </div>
+  </ng-template>
+
+  <ng-template #changedata>
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">Изменение данных</h4>
+      <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+        <div class="container">
+            
+        <div class="card">
+            <article class="card-body">
+                 <form (ngSubmit)="onChangeData(thisname,thisnumber)">
+                <div class="form-group">
+                    <label>Имя</label>
+                    <input name="" class="form-control" placeholder="Имя" type="text" [(ngModel)]="thisname"  [ngModelOptions]="{standalone: true}">
+                </div> 
+                <div class="form-group">
+                    <label>Номер телефона</label>
+                    <input name="" class="form-control"[textMask]="{mask: mask}" placeholder="+7 (   ) - " type="text" [(ngModel)]="thisnumber"  [ngModelOptions]="{standalone: true}">
+                </div> 
+ 
+                <div class="form-group"> 
+                </div> 
+                <div class="form-group">
+                    <button type="accept" class="btn btn-primary btn-block"> Сохранить  </button>
+                </div>                                                         
+            </form>
+            <alert type="danger" *ngIf="ischanged==2">
+                <strong>О, нет!</strong> Кажется вы допустили ошибку при вводе данных.
+              </alert>
+        
+              <alert type="success" *ngIf="ischanged==1">
+                <strong>Отлично!</strong> Мы сохранили ваши данные.
+              </alert>  
+            </article>
+        
+            </div>
+        
+        
+        </div>
+    </div>
+  </ng-template>
+
+
+
+  <ng-template #openaccount>
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">Управление аккаунтом</h4>
+      <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="container">
+                    
+        <div class="card">
+            <article class="card-body">
+                 <form (ngSubmit)="onEditAcc(openedacc,accname,accnumber,accrole)">
+                <div class="form-group">
+                    <label>Имя</label>
+                    <input name="" class="form-control" placeholder="Имя" type="text" [(ngModel)]="accname"  [ngModelOptions]="{standalone: true}">
+                </div> 
+                <div class="form-group">
+                    <label>Номер телефона</label>
+                    <input name="" class="form-control" placeholder="+7 (   ) - " type="text" [(ngModel)]="accnumber"  [ngModelOptions]="{standalone: true}">
+                </div> 
+                <div class="form-group">
+                    <label>Почта</label>
+                    <input name="" class="form-control" placeholder="Введите название..." type="text" [(ngModel)]="accemail"  [ngModelOptions]="{standalone: true}" disabled>
+                </div>  
+                <div class="form-group">
+                    <label>ID аккаунта в базе: {{this.openedacc}}</label>
+                </div>
+                <div class="form-group">
+                  <label for="exampleFormControlSelect1">Права аккаунта</label>
+                  <select name="accrole" class="form-control" id="exampleFormControlSelect1" [(ngModel)]="accrole">
+                    <option>Пользователь</option>
+                    <option>Редактор</option>
+                    <option>Администратор</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                    <button class="btn btn-primary btn-block"> Обновить данные</button>
+                   
+                </div>                                                         
+            </form>
+            <alert type="danger" *ngIf="isupdateacc==2">
+                <strong>О, нет!</strong> Кажется вы допустили ошибку при вводе данных.
+              </alert>
+        
+              <alert type="success" *ngIf="isupdateacc==1">
+                <strong>Отлично!</strong> Мы сохранили новые данные аккаунта.
+              </alert> 
+              <button (click)="deleteAccount(this.openedacc)" class="btn btn-warning btn-block"> Заблокировать аккаунт  </button>   
+            </article>
+        
+            </div>
+    </div>
+    </div>
+</ng-template>
+
+<ng-template #addcategory>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Добавление категории</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+      <div class="container">
+          
+      <div class="card">
+          <article class="card-body">
+               <form (ngSubmit)="addCategory(newcategory,newcategorytext)">
+              <div class="form-group">
+                  <label>Введите название категории</label>
+                  <input name="newcategory" class="form-control" placeholder="Название категории" type="text" [(ngModel)]="newcategory">
+              </div> 
+
+              <div class="form-group">
+                <label>Краткое описание категории</label>
+                <input name="newcategorytext" class="form-control" placeholder="Описание категории" type="text" [(ngModel)]="newcategorytext">
+            </div> 
+
+              <div class="form-group">
+                  <button type="submit" class="btn btn-primary btn-block"> Отправить  </button>
+              </div>                                                         
+          </form>
+      
+            <alert type="success" *ngIf="iscategoryadd==1">
+              <strong>Отлично!</strong> Новая категория создана и внесена в базу.
+            </alert>  
+          </article>
+      
+          </div>
+      
+      
+      </div>
+  </div>
+</ng-template>
+
+<ng-template #addplace>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Добавление района города</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+      <div class="container">
+          
+      <div class="card">
+          <article class="card-body">
+               <form (ngSubmit)="addPlace(newplace,newplacetext)">
+              <div class="form-group">
+                  <label>Введите название категории</label>
+                  <input name="newplace" class="form-control" placeholder="Название района" type="text" [(ngModel)]="newplace">
+              </div> 
+
+              <div class="form-group">
+                <label>Расположение</label>
+                <input name="newplacetext" class="form-control" placeholder="Расположение района в городе/области" type="text" [(ngModel)]="newplacetext" disabled>
+            </div> 
+
+              <div class="form-group">
+                  <button type="submit" class="btn btn-primary btn-block"> Отправить  </button>
+              </div>                                                         
+          </form>
+      
+            <alert type="success" *ngIf="isplaceadd==1">
+              <strong>Отлично!</strong> Новый район создан и внесен в базу.
+            </alert>  
+          </article>
+      
+          </div>
+      
+      
+      </div>
+  </div>
+</ng-template>
+
+<ng-template #addnews>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Добавление новости</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+      <div class="container">
+          
+      <div class="card">
+          <article class="card-body">
+               <form (ngSubmit)="addNews(newnewstext,newnewsstyle)">
+              <div class="form-group">
+                  <label>Введите текст новости</label>
+                  <input name="newplace" class="form-control" placeholder="Название района" type="text" [(ngModel)]="newnewstext">
+              </div> 
+
+              <div class="form-group">
+                <label for="exampleFormControlSelect1">Стиль новости</label>
+                <select name="newnewsstyle" class="form-control" id="exampleFormControlSelect2" [(ngModel)]="newnewsstyle">
+                  <option>success</option>
+                  <option>danger</option>
+                  <option>info</option>
+                  <option>warning</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                  <button type="submit" class="btn btn-primary btn-block"> Отправить  </button>
+              </div>                                                         
+          </form>
+      
+            <alert type="success" *ngIf="isnewsadd==1">
+              <strong>Отлично!</strong> Новость внесена в базу и отображается пользователям.
+            </alert>  
+          </article>
+      
+          </div>
+      
+      
+      </div>
+  </div>
+</ng-template>

@@ -17,7 +17,7 @@
                                 <tbody>
                                     <tr>
                                         <td>{{cdatabase}}</td>
-                                        <td>365</td>
+                                        <td>{{countadv}}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -34,7 +34,7 @@
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">Все объявления данной категории</h5>
-                    <div class="table-responsive">
+                    <div class="table-responsive table-wrapper-scroll-y my-custom-scrollbar" *ngIf="countadv != 0">
                         <table class="table">
                             <thead>
                                 <tr>
@@ -46,44 +46,17 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>0776</td>
-                                    <td>Sale Management</td>
-                                    <td>$18, 560</td>
-                                    <td>$18, 560</td>
-                                    <td><span class="badge badge-success">Finished</span></td>
-                                </tr>
-                                <tr>
-                                    <td>0759</td>
-                                    <td>Dropbox</td>
-                                    <td>$40, 672</td>
-                                    <td>$18, 560</td>
-                                    <td><span class="badge badge-warning">Waiting</span></td>
-                                </tr>
-                                <tr>
-                                    <td>0741</td>
-                                    <td>Social Media</td>
-                                    <td>$13, 378</td>
-                                    <td>$18, 560</td>
-                                    <td><span class="badge badge-info">In Progress</span></td>
-                                </tr>
-                                <tr>
-                                    <td>0740</td>
-                                    <td>Envato Market</td>
-                                    <td>$17, 456</td>
-                                    <td>$18, 560</td>
-                                    <td><span class="badge badge-info">In Progress</span></td>
-                                </tr>
-                                <tr>
-                                    <td>0735</td>
-                                    <td>Graphic Design</td>
-                                    <td>$29, 999</td>
-                                    <td>$18, 560</td>
-                                    <td><span class="badge badge-secondary">Canceled</span></td>
+                                <tr *ngFor="let i of objectKeys(this.adverts)">
+                                    <td>{{this.adverts[i]['category']}}</td>
+                                    <td>{{this.adverts[i]['name']}}</td>
+                                    <td>{{this.adverts[i]['price']}}₽</td>
+                                    <td>{{this.adverts[i]['date']}}</td>
+                                    <td><a href="./advert/{{i}}" class="badge badge-success">Открыть</a></td>
                                 </tr>
                             </tbody>
                         </table>
-                    </div>      
+                    </div>
+                    <p *ngIf="countadv == 0">Нет объявлений в данной категории</p>      
                 </div>
             </div>
         </div>

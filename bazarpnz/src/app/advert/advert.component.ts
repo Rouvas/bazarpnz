@@ -84,6 +84,13 @@ export class AdvertComponent implements OnInit {
     
      this.alladverts = val; // Полная бд
 
+     for (let i of this.objectKeys(this.alladverts)){
+      if (this.alladverts[i]['status']!=1){
+        delete this.alladverts[i];
+      }
+     }
+     
+
     //  this.classes = this.objectKeys(val).sort();  // Список классов
     //  if (localStorage.getItem('class') != null) {
     //   this.num = localStorage.getItem('class');

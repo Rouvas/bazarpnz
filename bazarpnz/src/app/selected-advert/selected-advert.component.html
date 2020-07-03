@@ -1,88 +1,363 @@
 <div class="container">
-
-<div class="row">
-    <div class="col-md-6">
+ <div class="row no-print" *ngIf="condition == true">
+    <div class="col-md-8">
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title"> Информация об объявлении</h5>
+                <h5 class="card-title">Информация по статусу объявления!</h5>
+                <p>Данная строка отображается только для владельца публикации. </p>
+                <alert type="warning" *ngIf="status == 'Проверка'">
+                    <strong>Внимание!</strong> Объявление находится на проверке. Объявление отображается только владельцу и администрации ресурса.
+                </alert>
+                <alert type="success" *ngIf="status == 'Активно'">
+                    <strong>Внимание!</strong> Объявление находится в общем доступе.
+                </alert>
+                <alert type="danger" *ngIf="status == 'Закрыто'">
+                    <strong>Внимание!</strong> Объявление было закрыто вами, Вы можете всегда вернуть его в выдачу, сменив статус "На проверку", либо модератор отклонил ваше объявление за нарушение правил.
+                </alert>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Если пользователь -->
+    <div class="col-md-4" *ngIf="conditionwho == false">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Управление объявлением</h5>
                 <div class="table-responsive">
                     <table class="table">
                         <thead>
                             <tr>
-                                <th scope="col">Категория</th>
-                                <th scope="col">Название</th>
-                                <th scope="col">Цена</th>       
+                                <th scope="col">Текущий статус</th>
+                                <th scope="col">Автор</th>
+
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td>{{this.category}}</td>
-                                <td>{{this.name}}</td>
-                                <td>{{this.price}} ₽</td>
+                                <td>{{this.status}}</td>
+                                <td>Вы</td>
                             </tr>
                         </tbody>
                     </table>
-                </div>      
+                </div>
+                <button href="##"  (click)="openModal(template)" class="btn btn-info btn-block"> Редактирование </button>
+                <button href="##"  (click)="openModal(changestatususer)" class="btn btn-warning btn-block"> Смена статуса </button>
+                <button href="##"  (click)="openModal(deleteadvert)" class="btn btn-danger btn-block"> Удалить публикацию </button>
+
+            </div>
+        </div>
+    </div>
+    <!-- Если редактор или админ -->
+    <div class="col-md-4" *ngIf="conditionwho == true">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Управление объявлением</h5>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Текущий статус</th>
+                                <th scope="col">Автор</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>{{this.status}}</td>
+                                <td>Открыть</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <button href="##"  (click)="openModal(template)" class="btn btn-info btn-block"> Редактирование </button>
+                <button href="##"  (click)="openModal(changestatusadmin)" class="btn btn-success btn-block"> Смена статуса </button>
+                <button href="##"  (click)="openModal(deleteadvert)" class="btn btn-danger btn-block"> Удалить публикацию </button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title"> Информация об объявлении</h5>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Категория</th>
+                                    <th scope="col">Название</th>
+                                    <th scope="col">Цена</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{{this.category}}</td>
+                                    <td>{{this.name}}</td>
+                                    <td>{{this.price}} ₽</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <a  style="color: red" (click)="openModal(abuse)">Отправить жалобу на объявление</a>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title"> Информация о продавце</h5>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Имя</th>
+                                    <th scope="col">Телефон</th>
+                                    <th scope="col">E-Mail</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{{this.ownername}}</td>
+                                    <td>{{this.ownernumber}}</td>
+                                    <td>{{this.ownermail}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
 
-    <div class="col-md-6">
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title"> Информация о продавце</h5>
-                <div class="table-responsive">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th scope="col">Имя</th>
-                                <th scope="col">Телефон</th>
-                                <th scope="col">E-Mail</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>{{this.ownername}}</td>
-                                <td>{{this.ownernumber}}</td>
-                                <td>{{this.ownermail}}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>      
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Район продажи</th>
+                                    <th scope="col">ID объявления в базе</th>
+                                    <th scope="col">Дата публикации</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{{this.place}}</td>
+                                    <td>{{this.advertid}}</td>
+                                    <td>{{this.date}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <li>Описание объявления: {{this.text}}</li>
+
+                </div>
             </div>
         </div>
     </div>
+    <div class="row">
+
+    </div>
+
 </div>
 
+<!-- Модалки на все случаи жизни -->
 
-<div class="row">
-    <div class="col-md-12">
-        <div class="card">
-            <div class="card-body">
-                <!-- <h5 class="card-title"></h5> -->
-                <div class="table-responsive">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th scope="col">Район продажи</th>
-                                <th scope="col">ID объявления в базе</th>
-                                <th scope="col">Дата публикации</th>       
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>{{this.place}}</td>
-                                <td>{{this.advertid}}</td>
-                                <td>{{this.date}}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>  
-                <li>Описание объявления: {{this.text}}</li>  
-                 
-            </div>
+<ng-template #template>
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">Изменение объявления</h4>
+      <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+        <div class="container">
+                    
+            <div class="card">
+                <article class="card-body">
+                     <form (ngSubmit)="onEditAdvert(name,price,category,place,text)">
+                    <div class="form-group">
+                        <label>Ваше имя</label>
+                        <input name="" class="form-control" placeholder="Имя" type="text" [(ngModel)]="ownername"  [ngModelOptions]="{standalone: true}" disabled>
+                    </div> 
+                    <div class="form-group">
+                        <label>Ваш номер телефона</label>
+                        <input name="" class="form-control" placeholder="+7 (   ) - " type="text" [(ngModel)]="ownernumber"  [ngModelOptions]="{standalone: true}" disabled>
+                    </div> 
+                    <div class="form-group">
+                        <label>Название объявления</label>
+                        <input name="" class="form-control" placeholder="Введите название..." type="text" [(ngModel)]="name"  [ngModelOptions]="{standalone: true}" >
+                    </div>  
+                    <div class="form-group">
+                        <label>Цена (в рублях)</label>
+                        <input name="" class="form-control" placeholder="Введите цену.." type="number" [(ngModel)]="price"  [ngModelOptions]="{standalone: true}" >
+                    </div>
+                    <div class="form-group">
+                        <label>Категория</label>
+                        <input name="" class="form-control" [typeahead]="this.categories" placeholder="Выберите категорию, начиная вводить" type="text" [(ngModel)]="category"  [ngModelOptions]="{standalone: true}" >
+                    </div> 
+                    <div class="form-group">
+                        <label>Район</label>
+                        <input name="" class="form-control" [typeahead]="this.places" placeholder="Введите район продажи..." type="text" [(ngModel)]="place"  [ngModelOptions]="{standalone: true}" >
+                    </div> 
+                    <div class="form-group">
+                        <label>Подробности</label>
+                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" [(ngModel)]="text" [ngModelOptions]="{standalone: true}"></textarea>
+                    </div>                
+
+                    <div class="form-group">
+                        <button class="btn btn-primary btn-block"> Обновить  </button>
+                        <p>Внимание! При обновлении статус меняется на "Проверка".</p>
+                    </div>                                                         
+                </form>
+                <alert type="danger" *ngIf="isnewadvert==2">
+                    <strong>О, нет!</strong> Кажется вы допустили ошибку при вводе данных.
+                  </alert>
+            
+                  <alert type="success" *ngIf="isnewadvert==1">
+                    <strong>Отлично!</strong> Мы отправили ваше объявление на проверку.
+                  </alert>  
+                </article>
+            
+                </div>
         </div>
     </div>
-</div>
-</div>
+  </ng-template>
+
+  <ng-template #changestatususer>
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">Вы хотите изменить статус?</h4>
+      <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+        <div class="container">
+                    
+            <div class="card">
+                <article class="card-body">
+        <fieldset class="form-group">
+            <div class="row">
+                <legend class="col-form-label col-sm-3 pt-0">Выберите тип</legend>
+                <div class="col-sm-10">
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="gridRadios" id="0"
+                            value="0" checked [(ngModel)]="statusselector">
+                        <label class="form-check-label" for="gridRadios1">
+                            На проверку
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="gridRadios" id="2"
+                            value="2" [(ngModel)]="statusselector">
+                        <label class="form-check-label" for="gridRadios2">
+                            Закрыть объявление
+                        </label>
+                    </div>
+                    
+                </div>
+            </div>
+        </fieldset>
+                </article>
+            </div>
+        </div>
+        <button href="##"  (click)="onChangeStatus(this.advertid,statusselector)" class="btn btn-danger btn-block"> Сохранить </button>
+        <button href="##"  (click)="modalRef.hide()" class="btn btn-success btn-block"> Отмена </button>
+    </div>
+  </ng-template>
+
+
+  <ng-template #changestatusadmin>
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">Вы хотите изменить статус?</h4>
+      <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+        <div class="container">
+                    
+            <div class="card">
+                <article class="card-body">
+        <fieldset class="form-group">
+            <div class="row">
+                <legend class="col-form-label col-sm-3 pt-0">Выберите тип</legend>
+                <div class="col-sm-10">
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="gridRadios" id="0"
+                            value="0" checked [(ngModel)]="statusselector">
+                        <label class="form-check-label" for="gridRadios1">
+                            На проверку
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="gridRadios" id="1"
+                            value="1" checked [(ngModel)]="statusselector">
+                        <label class="form-check-label" for="gridRadios1">
+                            Опубликовать
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="gridRadios" id="2"
+                            value="2" [(ngModel)]="statusselector">
+                        <label class="form-check-label" for="gridRadios2">
+                            Закрыть объявление
+                        </label>
+                    </div>
+                    
+                </div>
+            </div>
+        </fieldset>
+                </article>
+            </div>
+        </div>
+        <button href="##"  (click)="onChangeStatus(this.advertid,statusselector)" class="btn btn-danger btn-block"> Сохранить </button>
+        <button href="##"  (click)="modalRef.hide()" class="btn btn-success btn-block"> Отмена </button>
+    </div>
+  </ng-template>
+
+
+  <ng-template #deleteadvert>
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">Вы хотите удалить объявление?</h4>
+      <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+        <button href="##"  (click)="onDeleteAdvert(this.advertid)" class="btn btn-danger btn-block"> Да </button>
+        <button href="##"  (click)="modalRef.hide()" class="btn btn-success btn-block"> Нет </button>
+        <p>Это действие нельзя отменить!!!</p>
+    </div>
+  </ng-template>
+
+  <ng-template #abuse>
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">Вы хотите отправить жалобу?</h4>
+      <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+        <p>Отправляя жалобу, придерживайтесь логических и языковых правил русского языка.</p>
+        <div class="form-group">
+            <label>Расскажите, почему объявление нарушает правила</label>
+            <textarea class="form-control" id="exampleFormControlTextarea12" rows="3" [(ngModel)]="abusetext" [ngModelOptions]="{standalone: true}"></textarea>
+        </div> 
+        <button href="##"  (click)="addAbuse(this.abusetext)" class="btn btn-danger btn-block"> Отправить </button> 
+        <br *ngIf="isnewabuse==1">
+        <alert type="success" *ngIf="isnewabuse==1">
+            <strong>Отлично!</strong> Мы отправили вашу жалобу на проверку. 
+          </alert> 
+    </div>
+  </ng-template>

@@ -1,8 +1,8 @@
 
-<ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "medium" color = "#fff" type = "timer" [fullScreen] = "true"><p style="color: white" > Loading... </p></ngx-spinner>
+
 <div class="container">
 
-  <div class="row">
+  <div class="row no-print ">
     <div class="col-md-8">
         <div class="card  text-black">
             <div class="card-body">
@@ -34,7 +34,7 @@
                 <li>Ваш доступен просмотр объявлений.</li>
                 <li>Для создания объявлений, войдите.</li>
                 <li>Либо зарегестрируйтесь.</li>
-                <a class="btn btn-success m-t-xs" routerLink="/auth" onclick="return false;">Войти или зарегестрироваться</a>
+                <a class="btn btn-success m-t-xs" routerLink="/auth">Войти или зарегестрироваться</a>
              </div>
             </ng-template>
 
@@ -48,7 +48,7 @@
           <div class="card">
               <div class="card-body">
                   <h5 class="card-title">Категории объявлений</h5>
-                  <div class="table-responsive">
+                  <div class="table-responsive table-wrapper-scroll-y my-custom-scrollbar">
                       <table class="table">
                           <thead>
                               <tr>
@@ -117,18 +117,3 @@
       </div>
     </ng-template>
     
-
-        <!-- <div class="no-print justify-content-center">
-        <h5>Поиск объявления по названию</h5>
-        </div>
-    <div class="row justify-content-center align-self-center no-print"
-    >
-      <form class="enterclass" (submit)="openRasp()">
-        <div class="form-group">
-          <input type="text" class="form-control" placeholder="Введите текст..." [typeahead]="this.classes"
-            [(ngModel)]="num" name="num" value=" ">
-        </div>
-        <button class="btn btn-success"  (click)="openError(errorpage)">Открыть</button>
-    
-      </form>
-    </div> -->

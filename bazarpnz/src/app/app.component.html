@@ -1,24 +1,24 @@
 <!-- Шапка -->
-
+<ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "medium" color = "#fff" type = "timer" [fullScreen] = "true"><p style="color: white" > Loading... </p></ngx-spinner>
 <div class="lime-header">
   <nav class="navbar navbar-expand-lg">
 
       <a class="navbar-brand" href="#">BazarPNZ</a>
       <span dropdown>
-      <button class="navbar-toggler" type="button" id="basic-link" dropdownToggle data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" onclick="return false;">
+      <button class="navbar-toggler" type="button" id="basic-link" dropdownToggle data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" (click)="openModal(menu)" onclick="return false;">
           <i class="material-icons">keyboard_arrow_down</i>
       </button>
-      <ul class="dropdown-menu dropdown-menu-right" *dropdownMenu>
+      <!-- <ul class="dropdown-menu dropdown-menu-right" *dropdownMenu>
         <li><a class="dropdown-item" href="#">Главная страница</a></li>
         <li><a class="dropdown-item" href="./lk">Личный кабинет</a></li>
         <li class="divider"></li>
         <li><a class="dropdown-item" href="#">Выйти из аккаунта</a></li>
 
-    </ul>
+    </ul> -->
     </span>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <form class="form-inline my-2 my-lg-0 search">
-              <input class="form-control mr-sm-2" type="search" placeholder="Поиск по названиям объявлений..." aria-label="Search">
+              <input name="Search" class="form-control mr-sm-2" type="search" placeholder="Поиск по названиям объявлений..." aria-label="Search" [(ngModel)]="selectedValue"  [typeahead]="Search"  typeaheadOptionField="name" (typeaheadOnSelect)="onSelect($event)">
           </form>
           <ul class="navbar-nav ml-auto" >
               <li class="nav-item dropdown" dropdown>
@@ -69,3 +69,40 @@
     </div>
   </div>
 </footer> -->
+
+<ng-template #menu>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Навигация</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+      <div class="container">
+          
+      <div class="card">
+          <article class="card-body">
+            <label style="justify-content: center;">Поиск по названиям объявлений</label>
+            <form class="form-inline my-2 my-lg-0 search justify-content-center">
+              <input name="Search" class="form-control mr-sm-2" type="search" placeholder="Поиск по названиям объявлений..." aria-label="Search" [(ngModel)]="selectedValue"  [typeahead]="Search"  typeaheadOptionField="name" (typeaheadOnSelect)="onSelect($event); modalRef.hide();">
+          </form>
+
+          <button  href="##" (click)="onClose('/')" class="btn btn-info btn-block" style="margin-top:10px"> Главная страница  </button>
+          <button  href="##" (click)="onClose('/lk')" class="btn btn-info btn-block"> Личный кабинет  </button>
+          
+           <hr>
+           <ng-template #showLoginMobile>
+            <button  href="##" (click)="onClose('/auth')" class="btn btn-primary btn-block"> Войти или зарегестрироваться  </button>
+          </ng-template>
+           <button  *ngIf="auth.user | async as user; else showLoginMobile" href="##" (click)="onLogout()" class="btn btn-primary btn-block"> Выйти из аккаунта  </button>
+      
+    
+ 
+          </article>
+      
+          </div>
+      
+      
+      </div>
+  </div>
+</ng-template>

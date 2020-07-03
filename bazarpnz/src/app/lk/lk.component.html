@@ -31,8 +31,10 @@
                                             <li>Ваш E-Mail: {{email}}</li>
                                             <li>Ваш телефон: {{number}}</li>
                                             <li>Ваш статус: {{rolename}}</li>
-                                            <a href="#" class="btn btn-warning m-t-xs" style="margin-right: 10px;" (click)="openModal(changedata)" onclick="return false;">Изменить данные</a>
-                                            <a href="#" class="btn btn-warning m-t-xs" (click)="openModal(forgetpass)" onclick="return false;" >Сменить пароль</a>
+                                            <a href="#" class="btn btn-warning m-t-xs btn-block" style="margin-right: 10px;" (click)="openModal(changedata)" onclick="return false;">Изменить данные</a>
+                                            <a href="#" class="btn btn-warning m-t-xs btn-block" (click)="openModal(forgetpass)" onclick="return false;" >Сменить пароль</a>
+                                            <a *ngIf=" rolename== 'Редактор' " href="#" routerLink="/editor" class="btn btn-success m-t-xs btn-block">Войти в режим редактора</a>
+                                            <a *ngIf=" rolename== 'Администратор' "href="#" routerLink="/adminboard" class="btn btn-success m-t-xs btn-block" >Войти в режим администратора</a>
                                         </div>
                                     </div>
                                 </div>
@@ -193,7 +195,7 @@
                         </div> 
                         <div class="form-group">
                             <label>Район</label>
-                            <input name="" class="form-control" placeholder="Введите район продажи..." type="text" [(ngModel)]="place"  [ngModelOptions]="{standalone: true}" >
+                            <input name="" class="form-control" [typeahead]="this.places" placeholder="Введите район продажи..." type="text" [(ngModel)]="place"  [ngModelOptions]="{standalone: true}" >
                         </div> 
                         <div class="form-group">
                             <label>Подробности</label>

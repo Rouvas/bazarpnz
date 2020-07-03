@@ -3,6 +3,7 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { TemplateRef } from '@angular/core';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-auth',
@@ -31,7 +32,7 @@ export class AuthComponent implements OnInit {
 
   modalRef: BsModalRef;
 
-  constructor(public auth: AngularFireAuth, public db: AngularFireDatabase, private modalService: BsModalService) { }
+  constructor(public auth: AngularFireAuth, public db: AngularFireDatabase, private modalService: BsModalService, private router: Router) { }
 
   ngOnInit() {
   }
@@ -41,7 +42,11 @@ export class AuthComponent implements OnInit {
     let promise = new Promise((resolve, reject) => {
     
       this.auth.auth.signInWithEmailAndPassword(email, password).then(
-        result => {this.isloggined =1 ; window.location.reload()},
+        result => {this.isloggined =1 ; 
+          this.router.navigate(
+            ['/lk']
+        );
+        },
         error => this.isloggined = 2 
       );
     
