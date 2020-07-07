@@ -156,6 +156,6 @@ import { ErrorPageComponent } from './error-page/error-page.component';
   ],
   providers: [],
   bootstrap: [AppComponent],
-  schemas: [  ]
+  schemas: [NO_ERRORS_SCHEMA]
 })
 export class AppModule { }

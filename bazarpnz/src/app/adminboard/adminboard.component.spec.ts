@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AdminboardComponent } from './adminboard.component';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 describe('AdminboardComponent', () => {
   let component: AdminboardComponent;
@@ -8,7 +9,8 @@ describe('AdminboardComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AdminboardComponent ]
+      declarations: [ AdminboardComponent ],
+      schemas: [NO_ERRORS_SCHEMA],
     })
     .compileComponents();
   }));

@@ -22,7 +22,7 @@ export class AdminboardComponent implements OnInit {
   modalRef: BsModalRef;
 
   //Для фильтрации
-  searchAdv ='';
+  searchAdv = '';
   searchAcc = '';
   searchCat = '';
   searchPla = '';
@@ -107,7 +107,7 @@ export class AdminboardComponent implements OnInit {
 
       let count = 0;
       for (let i of this.objectKeys(this.allabuses)) {
-        this.abuses[count] = { name: this.allabuses[i]['name'], status: this.allabuses[i]['status'] };
+        this.abuses[count] = { name: this.allabuses[i]['name'], status: this.allabuses[i]['status'], uid:  this.allabuses[i]['bywho'], id: i };
         count = count + 1;
 
       }
@@ -115,52 +115,100 @@ export class AdminboardComponent implements OnInit {
     });
   }
 
-takenaccount = {};
-accname:any;
-accnumber:any;
-accrole:any;
-accemail:any;
-isupdateacc = 0;
+  takenaccount = {};
+  accname: any;
+  accnumber: any;
+  accrole: any;
+  accemail: any;
+  isupdateacc = 0;
 
   openModal(template: TemplateRef<any>, id) {
     this.modalRef = this.modalService.show(template);
     this.openedacc = id;
-   
-    if (id != undefined){
-      this.db.object('accounts/'+ id).valueChanges().subscribe(val => {
+
+    if (id != undefined) {
+      this.db.object('accounts/' + id).valueChanges().subscribe(val => {
 
         this.takenaccount = val;
         this.accname = this.takenaccount['name'];
         this.accnumber = this.takenaccount['number'];
         this.accrole = this.takenaccount['role'];
-        if(this.takenaccount['role'] == 0) {this.accrole = 'Пользователь'} else if (this.takenaccount['role'] == 1) {this.accrole = 'Редактор'} else {this.accrole = 'Администратор'}
+        if (this.takenaccount['role'] == 0) { this.accrole = 'Пользователь' } else if (this.takenaccount['role'] == 1) { this.accrole = 'Редактор' } else { this.accrole = 'Администратор' }
         this.accemail = this.takenaccount['email'];
 
-        
-  
+
+
       });
     }
   }
 
-  deleteAccount(id){
-   
+  deleteAccount(id) {
+
     let obj = {
       blocked: 1
     }
-    this.db.object('accounts/'+ id).update(obj);
+    this.db.object('accounts/' + id).update(obj);
   }
 
-  onEditAcc(id,name,number,role){
+  onEditAcc(id, name, number, role) {
 
-    if(role == 'Пользователь') {role = 0} else if (role == 'Редактор') {role = 1} else {role = 2}
+    if (role == 'Пользователь') { role = 0 } else if (role == 'Редактор') { role = 1 } else { role = 2 }
 
     let obj = {
       name: name,
       number: number,
       role: role,
     }
- 
-    this.db.object('accounts/'+ id).update(obj);
+
+    this.db.object('accounts/' + id).update(obj);
+  }
+
+  editNews(type, id, msg, style) {
+
+    if (type == 1) {
+      let obj = {
+        msg: msg,
+        type: style
+      }
+      this.db.object('alerts/' + id).update(obj);
+    } else if (type == 2) {
+      this.anyAlerts[this.idselectednews].msg = 'Новость удалена из базы.';
+      this.anyAlerts[this.idselectednews].msg = 'warning';
+      this.db.object('alerts/' + id).remove();
+      this.modalRef.hide();
+      window.location.reload();
+    }
+
+  }
+
+  idselectcat: any;
+  openModalCat(template: TemplateRef<any>, id) {
+    this.modalRef = this.modalService.show(template);
+    this.idselectcat = id;
+  }
+
+  idselectedplace: any;
+  openModalPlace(template: TemplateRef<any>, id) {
+    this.modalRef = this.modalService.show(template);
+    this.idselectedplace = id;
+  }
+
+  idselectednews: any;
+  openModalNews(template: TemplateRef<any>, id) {
+    this.modalRef = this.modalService.show(template);
+    this.idselectednews = id;
+  }
+
+  idcatdelete = 0;
+  editCategory(id) {
+    this.db.object('category/' + id).remove();
+    this.idcatdelete = 1;
+    this.modalRef.hide();
+  }
+
+  editPlace(id) {
+    this.db.object('place/' + id).remove();
+    this.modalRef.hide();
   }
 
   getCountAdverts() {
@@ -273,79 +321,79 @@ isupdateacc = 0;
             });
             this.data5 = false;
           }
-  
+
         }
 
       } else
-      if (what == 3) {
-        if (id == 1) {
-          if (this.data6 == false) {
-            this.categories.sort((prev, next) => {
-              if (prev.name < next.name) return -1;
-              if (prev.name < next.name) return 1;
-            });
-            this.data6 = true;
-          } else {
-            this.categories.sort((prev, next) => {
-              if (prev.name > next.name) return -1;
-              if (prev.name > next.name) return 1;
-            });
-            this.data6 = false;
+        if (what == 3) {
+          if (id == 1) {
+            if (this.data6 == false) {
+              this.categories.sort((prev, next) => {
+                if (prev.name < next.name) return -1;
+                if (prev.name < next.name) return 1;
+              });
+              this.data6 = true;
+            } else {
+              this.categories.sort((prev, next) => {
+                if (prev.name > next.name) return -1;
+                if (prev.name > next.name) return 1;
+              });
+              this.data6 = false;
+            }
           }
-        } 
 
-      } else
-      if (what == 4) {
-        if (id == 1) {
-          if (this.data7 == false) {
-            this.allplaces.sort((prev, next) => {
-              if (prev.name < next.name) return -1;
-              if (prev.name < next.name) return 1;
-            });
-            this.data7 = true;
-          } else {
-            this.allplaces.sort((prev, next) => {
-              if (prev.name > next.name) return -1;
-              if (prev.name > next.name) return 1;
-            });
-            this.data7 = false;
-          }
-        } 
+        } else
+          if (what == 4) {
+            if (id == 1) {
+              if (this.data7 == false) {
+                this.allplaces.sort((prev, next) => {
+                  if (prev.name < next.name) return -1;
+                  if (prev.name < next.name) return 1;
+                });
+                this.data7 = true;
+              } else {
+                this.allplaces.sort((prev, next) => {
+                  if (prev.name > next.name) return -1;
+                  if (prev.name > next.name) return 1;
+                });
+                this.data7 = false;
+              }
+            }
 
-      } else
-      if (what == 6) {
-        if (id == 1) {
-          if (this.data8 == false) {
-            this.abuses.sort((prev, next) => {
-              if (prev.name < next.name) return -1;
-              if (prev.name < next.name) return 1;
-            });
-            this.data8 = true;
-          } else {
-            this.abuses.sort((prev, next) => {
-              if (prev.name > next.name) return -1;
-              if (prev.name > next.name) return 1;
-            });
-            this.data8 = false;
-          }
-        } else if (id == 2) {
-          if (this.data9 == false) {
-            this.abuses.sort((prev, next) => {
-              if (prev.status < next.status) return -1;
-              if (prev.status < next.status) return 1;
-            });
-            this.data9 = true;
-          } else {
-            this.abuses.sort((prev, next) => {
-              if (prev.status > next.status) return -1;
-              if (prev.status > next.status) return 1;
-            });
-            this.data9 = false;
-          }
-  
-        }
+          } else
+            if (what == 6) {
+              if (id == 1) {
+                if (this.data8 == false) {
+                  this.abuses.sort((prev, next) => {
+                    if (prev.name < next.name) return -1;
+                    if (prev.name < next.name) return 1;
+                  });
+                  this.data8 = true;
+                } else {
+                  this.abuses.sort((prev, next) => {
+                    if (prev.name > next.name) return -1;
+                    if (prev.name > next.name) return 1;
+                  });
+                  this.data8 = false;
+                }
+              } else if (id == 2) {
+                if (this.data9 == false) {
+                  this.abuses.sort((prev, next) => {
+                    if (prev.status < next.status) return -1;
+                    if (prev.status < next.status) return 1;
+                  });
+                  this.data9 = true;
+                } else {
+                  this.abuses.sort((prev, next) => {
+                    if (prev.status > next.status) return -1;
+                    if (prev.status > next.status) return 1;
+                  });
+                  this.data9 = false;
+                }
 
-      }
+              }
+
+            }
   }
 
   getAdverts() {
@@ -364,6 +412,15 @@ isupdateacc = 0;
       }
 
 
+
+    });
+  }
+
+  allalerts = {};
+  getNews() {
+    this.db.object('alerts').valueChanges().subscribe(val => {
+
+      this.allalerts = val; // Полная бд
 
     });
   }
@@ -399,7 +456,7 @@ isupdateacc = 0;
       this.anyAlerts = val;
       let count = 0;
       for (let i of this.objectKeys(this.anyAlerts)) {
-        this.Alerts[count] = { msg: this.anyAlerts[i]['msg'] };
+        this.Alerts[count] = { msg: this.anyAlerts[i]['msg'], id: i };
         count = count + 1;
 
       }
@@ -458,6 +515,7 @@ isupdateacc = 0;
     this.getPlaces();
     this.getAlerts();
     this.getAbuses();
+    this.getNews();
   }
 
   blocked = 0;
@@ -468,7 +526,7 @@ isupdateacc = 0;
       this.database = val; // Полная бд
 
       this.blocked = this.database['blocked'];
-      if (this.blocked == 1) {this.router.navigate(['/error']);}
+      if (this.blocked == 1) { this.router.navigate(['/error']); }
 
       this.role = this.database['role'];
       if (this.role != 2) { this.router.navigate(['/lk']); }
@@ -481,32 +539,32 @@ isupdateacc = 0;
     });
 
   }
-  newcategory:any;
-  newcategorytext:any;
+  newcategory: any;
+  newcategorytext: any;
   iscategoryadd = 0;
 
-  addCategory(newcategory,newcategorytext){
-    this.db.object('category/'+newcategory).set(newcategorytext);
+  addCategory(newcategory, newcategorytext) {
+    this.db.object('category/' + newcategory).set(newcategorytext);
     this.iscategoryadd = 1;
   }
 
-  newplace:any;
+  newplace: any;
   newplacetext = 'Пенза';
   isplaceadd = 0;
-  
-  addPlace(newplace,newplacetext){
-    this.db.object('place/'+newplace).set(newplacetext);
+
+  addPlace(newplace, newplacetext) {
+    this.db.object('place/' + newplace).set(newplacetext);
     this.isplaceadd = 1;
   }
 
-  newnewsstyle:any;
-  newnewstext:any;
+  newnewsstyle: any;
+  newnewstext: any;
   isnewsadd = 0;
-  
-  addNews(text,style){
+
+  addNews(text, style) {
     let obj = {
       msg: text,
-      type: style    
+      type: style
     }
 
     this.db.list('alerts').push(obj);
@@ -539,6 +597,69 @@ isupdateacc = 0;
 
     });
 
+  }
+
+
+  openModalAbuse(template: TemplateRef<any>,id,uid) {
+    console.log(id); console.log(uid);
+    this.modalRef = this.modalService.show(template);
+    this.whatabuse = id;
+    this.getAbuseUser(id,uid);
+  }
+
+
+  Abuse(status,whatabuse){
+    
+    if (status == 0){
+
+      let obj = {
+        status:0
+      }
+
+      this.db.object('adverts/'+this.abuseid).update(obj);
+      this.db.object('abuses/' + this.uid).remove();
+      this.modalRef.hide();
+    } else {
+      this.db.object('abuses/' + this.uid).remove();
+      this.modalRef.hide();
+    }
+  }
+
+  uid:any;
+  abuseid:any;
+  abusetext:any;
+  userid:any;
+  infouser = {};
+  whocreateabuse:any;
+  whatabuse:any;
+  isnewabuse = 0;
+
+  someinfo ={}
+
+
+  getAbuseUser(id,uid){
+    this.uid = id;
+
+  
+   
+      this.abuseid = this.allabuses[id]['advertid'];
+     this.abusetext = this.allabuses[id]['text'];
+
+      this.userid = this.allabuses[id]['bywho'];
+      
+
+
+
+
+      this.db.object('accounts/'+[this.userid]).valueChanges().subscribe(val => {
+        this.infouser = val;
+  
+        this.whocreateabuse = this.infouser['name']
+  
+      });
+
+
+   
   }
 
 }

@@ -141,7 +141,7 @@
                                 <tbody>
                                     <tr *ngFor="let i of categories |filter:searchCat">
                                         <td>{{i['name']}}</td>
-                                        <td><a class="badge badge-success">Открыть</a></td>
+                                        <td><a (click)="openModalCat(editcategory,i['name'])" class="badge badge-success">Открыть</a></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -167,7 +167,7 @@
                               <tbody>
                                   <tr *ngFor="let i of allplaces |filter:searchPla">
                                       <td>{{i['name']}}</td>
-                                      <td><a (click)='openModal()' class="badge badge-success">Открыть</a></td>
+                                      <td><a (click)="openModalPlace(editplace,i['name'])" class="badge badge-success">Открыть</a></td>
                                   </tr>
                               </tbody>
                           </table>
@@ -197,7 +197,7 @@
                               <tbody>
                                   <tr *ngFor="let i of Alerts |filter:searchNews">
                                       <td>{{i['msg']}}</td>
-                                      <td><a class="badge badge-success">Открыть</a></td>
+                                      <td><a (click)="openModalNews(editnews,i['id'])" class="badge badge-success">Открыть</a></td>
                                   </tr>
                               </tbody>
                           </table>
@@ -225,7 +225,7 @@
                                 <tr *ngFor="let i of abuses |filter:searchAbu">
                                     <td>{{i['name']}}</td>
                                     <td>{{i['status']}}</td>
-                                    <td><a (click)='openModal()' class="badge badge-success">Открыть</a></td>
+                                    <td><a (click)="openModalAbuse(abuse,i['id'],i['uid'])" class="badge badge-success">Открыть</a></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -505,10 +505,11 @@
       <div class="card">
           <article class="card-body">
                <form (ngSubmit)="addNews(newnewstext,newnewsstyle)">
+        
               <div class="form-group">
-                  <label>Введите текст новости</label>
-                  <input name="newplace" class="form-control" placeholder="Название района" type="text" [(ngModel)]="newnewstext">
-              </div> 
+                <label>Текст новости</label>
+                <textarea class="form-control" id="exampleFormControlTextarea10" rows="3" [(ngModel)]="newnewstext" placeholder="Текст новости..." [ngModelOptions]="{standalone: true}"></textarea>
+            </div> 
 
               <div class="form-group">
                 <label for="exampleFormControlSelect1">Стиль новости</label>
@@ -536,3 +537,144 @@
       </div>
   </div>
 </ng-template>
+
+
+
+<ng-template #editcategory>
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">Управление категорией</h4>
+      <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+        <div class="container">
+            
+        <div class="card">
+            <article class="card-body">
+                 <form (ngSubmit)="editCategory(catname,cattext)">
+                <div class="form-group">
+                    <label>Название категории</label>
+                    <input name="idselectcat" class="form-control" placeholder="Название категории" type="text" [(ngModel)]="idselectcat" disabled>
+                </div> 
+                <!-- <div class="form-group">
+                    <button type="submit" class="btn btn-primary btn-block"> Отправить  </button>
+                </div>                                                          -->
+            </form>
+
+            <button (click)="editCategory(this.idselectcat)" class="btn btn-warning btn-block"> Удалить категорию  </button>
+            <p>Удаление категории допустимо, только, если нет объявлений по данной категории</p>
+        
+            </article>
+            </div>      
+        </div>
+    </div>
+  </ng-template>
+
+
+  <ng-template #editplace>
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">Управление районом</h4>
+      <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+        <div class="container">
+            
+        <div class="card">
+            <article class="card-body">
+                 <form (ngSubmit)="editCategory(catname,cattext)">
+                <div class="form-group">
+                    <label>Название района</label>
+                    <input name="idselectcat" class="form-control" placeholder="Название категории" type="text" [(ngModel)]="idselectedplace" disabled>
+                </div> 
+                <!-- <div class="form-group">
+                    <button type="submit" class="btn btn-primary btn-block"> Отправить  </button>
+                </div>                                                          -->
+            </form>
+
+            <button (click)="editPlace(this.idselectedplace)" class="btn btn-warning btn-block"> Удалить район  </button>
+            <p>Удаление района допустимо, только, если нет объявлений по данному району</p>
+        
+            </article>
+            </div>      
+        </div>
+    </div>
+  </ng-template>
+
+  <ng-template #editnews>
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">Управление новостью</h4>
+      <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+        <div class="container">
+            
+        <div class="card">
+            <article class="card-body">
+
+                <alert [type]="this.anyAlerts[this.idselectednews].type">{{ this.anyAlerts[this.idselectednews].msg }}</alert>
+
+                 <form (ngSubmit)="editNews(1,idselectednews,anyAlerts[idselectednews].msg,anyAlerts[idselectednews].type)">
+                    <div class="form-group">
+                        <label>Текст новости</label>
+                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" [(ngModel)]="anyAlerts[idselectednews].msg" placeholder="{{this.anyAlerts[this.idselectednews].msg}}" [ngModelOptions]="{standalone: true}"></textarea>
+                    </div> 
+                    <div class="form-group">
+                        <label for="exampleFormControlSelect1">Стиль новости</label>
+                        <select name="newnewsstyle" class="form-control" id="exampleFormControlSelect3" [(ngModel)]="anyAlerts[idselectednews].type" >
+                          <option>success</option>
+                          <option>danger</option>
+                          <option>info</option>
+                          <option>warning</option>
+                        </select>
+                      </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary btn-block"> Обновить  </button>
+                </div>                                                         
+            </form>
+
+            <button (click)="editNews(2,this.idselectednews,0,0)" class="btn btn-warning btn-block"> Удалить новость  </button>
+        
+            </article>
+            </div>      
+        </div>
+    </div>
+  </ng-template>
+
+
+  <ng-template #abuse>
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">Проверка полученной жалобы</h4>
+      <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+        <p>Проверяя жалобу, учитывайте правила сообщества</p>
+        <p>Принятие жалобы означает, что статус объявления сменяется на "Закрыто"</p>
+        <p>Отклонение жалобы, удаляет жалобу</p>
+
+        <div class="form-group">
+            <label>Кто отправил жалобу</label>
+            <input name="" class="form-control" placeholder="Имя" type="text" [(ngModel)]="whocreateabuse"  [ngModelOptions]="{standalone: true}" disabled>
+        </div> 
+
+        <div class="form-group">
+            <label>Подробности</label>
+            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" [(ngModel)]="abusetext" [ngModelOptions]="{standalone: true}" disabled>Жалоба</textarea>
+        </div> 
+        <a href="/advert/{{abuseid}}" class="btn btn-success btn-block">Открыть объявление</a>
+        <hr>
+        <button href="##"  (click)="Abuse(0,this.abuseid)" class="btn btn-danger btn-block"> Принять </button> 
+        <button href="##"  (click)="Abuse(1)" class="btn btn-warning btn-block"> Отклонить </button> 
+
+        <br *ngIf="isnewabuse==1">
+        <alert type="success" *ngIf="isnewabuse==1">
+            <strong>Отлично!</strong> Ваше решение сохранено. 
+          </alert> 
+    </div>
+  </ng-template>
