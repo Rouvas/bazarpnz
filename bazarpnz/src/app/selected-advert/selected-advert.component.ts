@@ -159,8 +159,9 @@ export class SelectedAdvertComponent implements OnInit, OnDestroy {
       this.db.object('accounts/' + this.userId).valueChanges().subscribe(val => {
     
         this.database = val; // Полная бд
-      
-        this.myrole = this.database['role'];
+     
+        if (val === null) {this.myrole = 'Пользователь'} else {
+        this.myrole = this.database['role'];}
        
 
         if(this.cdatabase['status'] != 1){
