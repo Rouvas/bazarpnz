@@ -613,7 +613,7 @@ export class AdminboardComponent implements OnInit {
     if (status == 0){
 
       let obj = {
-        status:0
+        status:2
       }
 
       this.db.object('adverts/'+this.abuseid).update(obj);

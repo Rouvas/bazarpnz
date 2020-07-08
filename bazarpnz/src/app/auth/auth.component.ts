@@ -67,6 +67,9 @@ export class AuthComponent implements OnInit {
           let updates = {};
           updates[result.user.uid] = {email: email, name : name, number : number, role : 0 };
           this.db.object('accounts').update(updates);
+          this.router.navigate(
+            ['/lk']
+        );
         },
         error => this.isregistered = 2 
        );

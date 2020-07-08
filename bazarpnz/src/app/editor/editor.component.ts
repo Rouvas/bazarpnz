@@ -73,7 +73,7 @@ export class EditorComponent implements OnInit {
     if (status == 0){
 
       let obj = {
-        status:0
+        status:2
       }
 
       this.db.object('adverts/'+whatabuse['advertid']).update(obj);
