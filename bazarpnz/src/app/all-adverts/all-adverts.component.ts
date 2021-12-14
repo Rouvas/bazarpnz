@@ -52,7 +52,7 @@ export class AllAdvertsComponent implements OnInit {
 
      let sorting: Array<Object>;
      for (let i of this.objectKeys(this.adverts)){
-      if (this.adverts[i]['category']!=id){
+      if (this.adverts[i]['category']!=id || this.adverts[i]['status'] != 1){
         delete this.adverts[i];
       }
      }
